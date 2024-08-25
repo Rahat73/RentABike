@@ -1,5 +1,7 @@
+import MainLayout from "./components/layout/MainLayout";
+
 function App() {
-  return <div className="text-3xl font-extrabold">hello</div>;
+  return <MainLayout />;
 }
 
 export default App;
