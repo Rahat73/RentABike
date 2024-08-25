@@ -1,4 +1,4 @@
-import { Col, Layout, Menu, Row } from "antd";
+import { Button, Col, Layout, Menu, Row } from "antd";
 import {
   FaSquareFacebook,
   FaSquareInstagram,
@@ -18,24 +18,6 @@ const items = [
 ];
 
 const MainLayout = () => {
-  //   const { cart } = useAppSelector((state) => state.cart);
-
-  //   useEffect(() => {
-  //     if (!cart.length) return;
-
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     const handleBeforeUnload = (event: any) => {
-  //       event.preventDefault();
-  //       event.returnValue = "";
-  //     };
-
-  //     window.addEventListener("beforeunload", handleBeforeUnload);
-
-  //     return () => {
-  //       window.removeEventListener("beforeunload", handleBeforeUnload);
-  //     };
-  //   }, [cart]);
-
   return (
     <Layout>
       <Header
@@ -49,12 +31,14 @@ const MainLayout = () => {
         }}
       >
         {/* <img src={logo} className="w-[300px]" /> */}
+        <p className="text-white">RentABike</p>
         <Menu
           theme="dark"
           mode="horizontal"
           items={items}
-          style={{ flex: 1, minWidth: 0, justifyContent: "end" }}
+          style={{ flex: 1, minWidth: 0, justifyContent: "center" }}
         />
+        <Button>Logout</Button>
       </Header>
       <Content className="min-h-[80vh]">
         <div>
@@ -68,7 +52,7 @@ const MainLayout = () => {
         <Row>
           <Col span={12}>
             <p>Copyright © 2024. All Rights Reserved.</p>
-            <p>Sporting Goods</p>
+            <p>RentABike</p>
           </Col>
           <Col span={12} className="flex justify-center">
             <Row className="text-3xl space-x-4">
