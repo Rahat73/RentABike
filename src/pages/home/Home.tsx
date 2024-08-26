@@ -1,7 +1,9 @@
+import HeroSection from "./heroSection/HeroSection";
+
 const Home = () => {
   return (
     <div>
-      <div className="bg-red-500">lisduhflikjsbnf</div> this is home{" "}
+      <HeroSection />
     </div>
   );
 };

@@ -42,6 +42,7 @@ const MainLayout = () => {
           width: "100%",
           display: "flex",
           alignItems: "center",
+          height: "56px",
         }}
       >
         {/* <img src={logo} className="w-[300px]" /> */}
@@ -50,7 +51,12 @@ const MainLayout = () => {
           theme="dark"
           mode="horizontal"
           items={items}
-          style={{ flex: 1, minWidth: 0, justifyContent: "center" }}
+          style={{
+            flex: 1,
+            minWidth: 0,
+            justifyContent: "center",
+            height: "56px",
+          }}
         />
         {user ? (
           <Button onClick={handleLogout}>Logout</Button>
