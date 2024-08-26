@@ -1,3 +1,4 @@
+import DiscountSection from "./discountSection/DiscountSection";
 import FeaturedSection from "./featuredSection/FeaturedSection";
 import HeroSection from "./heroSection/HeroSection";
 import Testimonials from "./testimonials/Testimonials";
@@ -10,6 +11,7 @@ const Home = () => {
       <FeaturedSection />
       <Testimonials />
       <WhyChooseUs />
+      <DiscountSection />
     </div>
   );
 };
