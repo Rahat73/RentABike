@@ -4,7 +4,7 @@ const { Meta } = Card;
 const FeaturedSection = () => {
   return (
     <div className="mx-auto w-10/12 flex flex-col items-center">
-      <h1 className="text-3xl font-bold mb-4">Featured Bikes</h1>
+      <h1 className="text-3xl font-bold mb-8">Featured Bikes</h1>
       <Space size={"large"}>
         <Card
           hoverable

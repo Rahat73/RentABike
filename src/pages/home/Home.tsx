@@ -1,6 +1,7 @@
 import FeaturedSection from "./featuredSection/FeaturedSection";
 import HeroSection from "./heroSection/HeroSection";
 import Testimonials from "./testimonials/Testimonials";
+import WhyChooseUs from "./whyChooseUs/WhyChooseUs";
 
 const Home = () => {
   return (
@@ -8,6 +9,7 @@ const Home = () => {
       <HeroSection />
       <FeaturedSection />
       <Testimonials />
+      <WhyChooseUs />
     </div>
   );
 };
