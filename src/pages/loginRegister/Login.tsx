@@ -5,11 +5,38 @@ import AppForm from "../../components/form/AppForm";
 import AppInput from "../../components/form/AppInput";
 import AppInputPassword from "../../components/form/AppInputPassword";
 import { loginSchema } from "../../schemas/loginRegistration.schema";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { toast } from "sonner";
+import { setUser, TUser } from "../../redux/features/auth/authSlice";
+import { useAppDispatch } from "../../redux/hooks";
+import { verifyToken } from "../../utils/verifyToken";
+import { TPostResponse } from "../../types";
+import { TLogin } from "../../types/loginRegistration.type";
 
 const Login = () => {
-  const handleLogin: SubmitHandler<FieldValues> = (data) => {
-    console.log("handleLogin", data);
+  const [login] = useLoginMutation();
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
+
+  const handleLogin: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Logging in...");
+
+    try {
+      const res = (await login(data)) as TPostResponse<TLogin>;
+      if (res.error) {
+        toast.error(res.error?.data.message, { id: toastId });
+      } else if (res.data?.accessToken) {
+        const user = verifyToken(res.data.accessToken) as TUser;
+        dispatch(setUser({ user: user, token: res.data?.accessToken }));
+        toast.success("Logged in successfully!", { id: toastId });
+        navigate(`/${user.role}`);
+      }
+    } catch (error: any) {
+      toast.error("Something went wrong !", { id: toastId });
+      console.error(error);
+    }
   };
 
   return (
