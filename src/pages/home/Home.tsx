@@ -1,3 +1,4 @@
+import ContactUs from "./contactUs/ContactUs";
 import DiscountSection from "./discountSection/DiscountSection";
 import FeaturedSection from "./featuredSection/FeaturedSection";
 import HeroSection from "./heroSection/HeroSection";
@@ -12,6 +13,7 @@ const Home = () => {
       <Testimonials />
       <WhyChooseUs />
       <DiscountSection />
+      <ContactUs />
     </div>
   );
 };
