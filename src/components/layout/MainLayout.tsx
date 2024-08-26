@@ -4,26 +4,33 @@ import {
   FaSquareInstagram,
   FaSquareXTwitter,
 } from "react-icons/fa6";
-import { Link, NavLink, Outlet } from "react-router-dom";
-import { useAppDispatch } from "../../redux/hooks";
-import { logout } from "../../redux/features/auth/authSlice";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { logout, selectCurrentUser } from "../../redux/features/auth/authSlice";
 const { Header, Content, Footer } = Layout;
-const items = [
-  {
-    key: "home",
-    label: <NavLink to={`/`}>Home</NavLink>,
-  },
-  {
-    key: "about-us",
-    label: <NavLink to={`/about-us`}>About Us</NavLink>,
-  },
-];
 
 const MainLayout = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectCurrentUser);
   const handleLogout = () => {
     dispatch(logout());
   };
+
+  const items = [
+    {
+      key: "home",
+      label: <NavLink to={user ? `/${user?.role}/` : "/"}>Home</NavLink>,
+    },
+    {
+      key: "about-us",
+      label: (
+        <NavLink to={user ? `/${user?.role}/about-us` : "/about-us"}>
+          About Us
+        </NavLink>
+      ),
+    },
+  ];
 
   return (
     <Layout>
@@ -45,7 +52,14 @@ const MainLayout = () => {
           items={items}
           style={{ flex: 1, minWidth: 0, justifyContent: "center" }}
         />
-        <Button onClick={handleLogout}>Logout</Button>
+        {user ? (
+          <Button onClick={handleLogout}>Logout</Button>
+        ) : (
+          <>
+            <Button onClick={() => navigate("/login")}>Login</Button>
+            <Button onClick={() => navigate("/register")}>Sign Up</Button>
+          </>
+        )}
       </Header>
       <Content className="min-h-[80vh]">
         <div>

@@ -12,7 +12,7 @@ import { setUser, TUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { verifyToken } from "../../utils/verifyToken";
 import { TPostResponse } from "../../types";
-import { TLogin } from "../../types/loginRegistration.type";
+import { TUserInfo } from "../../types/loginRegistration.type";
 
 const Login = () => {
   const [login] = useLoginMutation();
@@ -24,7 +24,7 @@ const Login = () => {
     const toastId = toast.loading("Logging in...");
 
     try {
-      const res = (await login(data)) as TPostResponse<TLogin>;
+      const res = (await login(data)) as TPostResponse<TUserInfo>;
       if (res.error) {
         toast.error(res.error?.data.message, { id: toastId });
       } else if (res.data?.accessToken) {

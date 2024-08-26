@@ -5,11 +5,33 @@ import AppInputPassword from "../../components/form/AppInputPassword";
 import { Button } from "antd";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registrationSchema } from "../../schemas/loginRegistration.schema";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../../redux/features/auth/authApi";
+import { toast } from "sonner";
+import { TPostResponse } from "../../types";
+import { TUserInfo } from "../../types/loginRegistration.type";
 
 const Register = () => {
-  const handleLogin: SubmitHandler<FieldValues> = (data) => {
-    console.log("handleLogin", data);
+  const [register] = useRegisterMutation();
+  const navigate = useNavigate();
+
+  const handleLogin: SubmitHandler<FieldValues> = async (data) => {
+    const userData = { ...data, role: "user" };
+
+    const toastId = toast.loading("Registering...");
+    const res = (await register(userData)) as TPostResponse<TUserInfo>;
+
+    try {
+      if (res.error) {
+        toast.error(res.error?.data.message, { id: toastId });
+      } else {
+        toast.success("Registered successfully!", { id: toastId });
+        navigate(`/login`);
+      }
+    } catch (error) {
+      toast.error("Something went wrong !", { id: toastId });
+      console.error(error);
+    }
   };
 
   return (

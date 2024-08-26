@@ -1,6 +1,6 @@
 import { TRoles } from "./global.type";
 
-export type TLogin = {
+export type TUserInfo = {
   _id: string;
   name: string;
   email: string;
