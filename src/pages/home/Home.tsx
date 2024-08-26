@@ -1,13 +1,14 @@
-import { Space } from "antd";
 import FeaturedSection from "./featuredSection/FeaturedSection";
 import HeroSection from "./heroSection/HeroSection";
+import Testimonials from "./testimonials/Testimonials";
 
 const Home = () => {
   return (
-    <Space align="center" direction="vertical" size={[0, 100]}>
+    <div className="flex flex-col space-y-16">
       <HeroSection />
       <FeaturedSection />
-    </Space>
+      <Testimonials />
+    </div>
   );
 };
 

@@ -1,0 +1,22 @@
+.custom-carousel .slick-dots li button {
+  background-color: #364d79;
+}
+
+.custom-carousel .slick-dots li.slick-active button {
+  background-color: #1890ff;
+}
+
+.custom-carousel .slick-prev,
+.custom-carousel .slick-next {
+  font-size: 20px;
+  color: #364d79;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.custom-carousel .slick-prev:hover,
+.custom-carousel .slick-next:hover {
+  color: #1890ff;
+}

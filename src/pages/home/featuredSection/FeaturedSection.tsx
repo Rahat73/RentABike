@@ -3,7 +3,7 @@ import { Button, Card, Space } from "antd";
 const { Meta } = Card;
 const FeaturedSection = () => {
   return (
-    <div>
+    <div className="mx-auto w-10/12 flex flex-col items-center">
       <h1 className="text-3xl font-bold mb-4">Featured Bikes</h1>
       <Space size={"large"}>
         <Card
