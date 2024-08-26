@@ -5,6 +5,8 @@ import {
   FaSquareXTwitter,
 } from "react-icons/fa6";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks";
+import { logout } from "../../redux/features/auth/authSlice";
 const { Header, Content, Footer } = Layout;
 const items = [
   {
@@ -18,6 +20,11 @@ const items = [
 ];
 
 const MainLayout = () => {
+  const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <Layout>
       <Header
@@ -38,7 +45,7 @@ const MainLayout = () => {
           items={items}
           style={{ flex: 1, minWidth: 0, justifyContent: "center" }}
         />
-        <Button>Logout</Button>
+        <Button onClick={handleLogout}>Logout</Button>
       </Header>
       <Content className="min-h-[80vh]">
         <div>

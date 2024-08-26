@@ -7,6 +7,7 @@ import Login from "../pages/loginRegister/Login";
 import Register from "../pages/loginRegister/Register";
 import PrivacyPolicy from "../pages/ppts/PrivacyPolicy";
 import TermsOfService from "../pages/ppts/TermsOfService";
+import ProtectedRoute from "../components/layout/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <App />,
+    element: (
+      <ProtectedRoute role="admin">
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "",
@@ -48,7 +53,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/user",
-    element: <App />,
+    element: (
+      <ProtectedRoute role="user">
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "",
