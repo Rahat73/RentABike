@@ -4,7 +4,7 @@ import {
   FaSquareInstagram,
   FaSquareXTwitter,
 } from "react-icons/fa6";
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 const { Header, Content, Footer } = Layout;
 const items = [
   {
@@ -50,11 +50,22 @@ const MainLayout = () => {
         className="bg-slate-800 text-white"
       >
         <Row>
-          <Col span={12}>
+          <Col span={12} className="flex flex-col">
+            <Link to="/privacy-policy" className="underline">
+              Privacy Policy
+            </Link>
+            <Link to="/terms-of-service" className="underline">
+              Terms of service
+            </Link>
             <p>Copyright © 2024. All Rights Reserved.</p>
             <p>RentABike</p>
           </Col>
-          <Col span={12} className="flex justify-center">
+          <Col span={12} className="flex flex-col justify-center items-center">
+            <div className="mb-3">
+              <p>Contact Us</p>
+              <p>Phone: 123-456-7890</p>
+              <p>Email: rentAbike@example.com</p>
+            </div>
             <Row className="text-3xl space-x-4">
               <a
                 href="https://www.facebook.com/"
