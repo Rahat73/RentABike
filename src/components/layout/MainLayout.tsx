@@ -53,6 +53,14 @@ const MainLayout = () => {
         </NavLink>
       ),
     },
+    ...(user
+      ? [
+          {
+            key: "bikes",
+            label: <NavLink to={`/${user?.role}/bikes`}>Bikes</NavLink>,
+          },
+        ]
+      : []),
   ];
 
   return (
