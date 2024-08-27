@@ -30,7 +30,9 @@ const Login = () => {
       } else if (res.data?.accessToken) {
         const user = verifyToken(res.data.accessToken) as TUser;
         dispatch(setUser({ user: user, token: res.data?.accessToken }));
-        toast.success("Logged in successfully!", { id: toastId });
+        toast.success(`Welcome back ${res.data?.data?.name} !`, {
+          id: toastId,
+        });
         navigate(`/${user.role}`);
       }
     } catch (error: any) {

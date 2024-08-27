@@ -1,23 +1,46 @@
-import { Button, Col, Layout, Menu, Row } from "antd";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  Avatar,
+  Button,
+  Col,
+  Divider,
+  Dropdown,
+  Layout,
+  Menu,
+  Row,
+  Skeleton,
+  Space,
+} from "antd";
 import {
   FaSquareFacebook,
   FaSquareInstagram,
   FaSquareXTwitter,
 } from "react-icons/fa6";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import {
+  logout,
+  selectCurrentToken,
+  TUser,
+} from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { logout, selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { verifyToken } from "../../utils/verifyToken";
+import { useGetUserInfoQuery } from "../../redux/features/user/userApi";
 const { Header, Content, Footer } = Layout;
 
 const MainLayout = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectCurrentUser);
+  const token = useAppSelector(selectCurrentToken);
+
+  const user = token && (verifyToken(token) as TUser);
+
+  const { data: userInfo, isFetching } = useGetUserInfoQuery(undefined);
+
   const handleLogout = () => {
     dispatch(logout());
   };
 
-  const items = [
+  const menuItems = [
     {
       key: "home",
       label: <NavLink to={user ? `/${user?.role}/` : "/"}>Home</NavLink>,
@@ -43,14 +66,14 @@ const MainLayout = () => {
           display: "flex",
           alignItems: "center",
           height: "56px",
+          backgroundColor: "white",
         }}
       >
-        {/* <img src={logo} className="w-[300px]" /> */}
-        <p className="text-white">RentABike</p>
+        <p className="text-3xl font-bold">RentABike</p>
         <Menu
-          theme="dark"
+          // theme="dark"
           mode="horizontal"
-          items={items}
+          items={menuItems}
           style={{
             flex: 1,
             minWidth: 0,
@@ -59,7 +82,42 @@ const MainLayout = () => {
           }}
         />
         {user ? (
-          <Button onClick={handleLogout}>Logout</Button>
+          <Dropdown
+            trigger={["click"]}
+            arrow
+            dropdownRender={() => (
+              <div className="bg-white p-4 rounded-lg w-60">
+                <Menu>
+                  <Menu.Item
+                    onClick={() => navigate(`/${user?.role}/user-profile`)}
+                  >
+                    View Profile
+                  </Menu.Item>
+                </Menu>
+                <Divider style={{ margin: 5 }} />
+                <Space align="end">
+                  <Button onClick={handleLogout} danger type="primary">
+                    Logout
+                  </Button>
+                </Space>
+              </div>
+            )}
+          >
+            {isFetching ? (
+              <div className="flex items-center cursor-pointer space-x-2 translate-y-4">
+                <Skeleton.Avatar active />
+                <Skeleton.Input active />
+              </div>
+            ) : (
+              <div className="flex items-center cursor-pointer space-x-2">
+                <Avatar icon={<UserOutlined />} />
+                <span className="font-semibold text-base">
+                  {userInfo?.data?.name}
+                </span>
+                <DownOutlined />
+              </div>
+            )}
+          </Dropdown>
         ) : (
           <>
             <Button onClick={() => navigate("/login")}>Login</Button>

@@ -8,6 +8,7 @@ import Register from "../pages/loginRegister/Register";
 import PrivacyPolicy from "../pages/ppts/PrivacyPolicy";
 import TermsOfService from "../pages/ppts/TermsOfService";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
+import UserProfile from "../pages/userProfileManagement/UserProfile";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
         path: "about-us",
         element: <AboutUs />,
       },
+      {
+        path: "user-profile",
+        element: <UserProfile />,
+      },
     ],
   },
   {
@@ -66,6 +71,10 @@ const router = createBrowserRouter([
       {
         path: "about-us",
         element: <AboutUs />,
+      },
+      {
+        path: "user-profile",
+        element: <UserProfile />,
       },
     ],
   },

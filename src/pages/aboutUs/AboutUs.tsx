@@ -1,3 +1,4 @@
+import { Timeline } from "antd";
 import bikeImage1 from "../../assets/images/bike-1.avif";
 import bikeImage2 from "../../assets/images/bike-2.avif";
 import image_contactus from "../../assets/images/contactus.webp";
@@ -64,6 +65,44 @@ const AboutUs = () => {
               </p>
             </div>
           </div>
+        </section>
+
+        {/* History & Milestones Section */}
+        <section className="text-xl bg-white rounded-lg shadow-md p-8 mb-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <h1 className="text-3xl font-semibold mb-4 flex justify-center items-center col-span-1">
+            Our History <br className="hidden lg:block" /> &{" "}
+            <br className="hidden lg:block" /> Milestones
+          </h1>
+          <Timeline
+            className="col-span-2"
+            mode={"alternate"}
+            items={[
+              {
+                label: "2021 June 15",
+                children: "RentABike Service Launched",
+              },
+              {
+                label: "2021 July 10",
+                children: "Added New Bike Models to the Fleet",
+              },
+              {
+                label: "2021 August 25",
+                children: "Introduced Weekend Rental Discounts",
+              },
+              {
+                label: "2022 March 01",
+                children: "Launched 24/7 Customer Support",
+              },
+              {
+                label: "2022 September 15",
+                children: "Reached 10,000+ Happy Customers",
+              },
+              {
+                label: "2023 January 05",
+                children: "Released Mobile App for Easy Booking",
+              },
+            ]}
+          />
         </section>
 
         {/* Contact Information Section */}
