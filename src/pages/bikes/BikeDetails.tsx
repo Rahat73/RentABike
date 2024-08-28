@@ -3,19 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGetBikeByIdQuery } from "../../redux/features/bike/bikeApi";
 import { useEffect } from "react";
 
-const bike = {
-  name: "Yamaha R15",
-  description:
-    "The Yamaha R15 is a 150cc sports bike with a sleek design and advanced features. It offers an exhilarating ride experience.",
-  price: "$100/day",
-  cc: "150cc",
-  year: "2022",
-  brand: "Yamaha",
-  availability: "Available",
-  mileage: "40 km/l",
-  fuelType: "Petrol",
-};
-
 const BikeDetails = () => {
   useEffect(() => {
     scrollTo(0, 0);
@@ -32,6 +19,7 @@ const BikeDetails = () => {
   return (
     <div className="w-10/12 mx-auto mt-8">
       <Card
+        loading={isFetching}
         title={bike?.data?.name}
         extra={
           <div className="flex items-center">

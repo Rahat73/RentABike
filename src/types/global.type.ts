@@ -41,7 +41,7 @@ export type TResponseRedux<T> = TResponse<T> & BaseQueryApi; //BaseQueryApi need
 
 export type TQueryParams = {
   key: string;
-  value: boolean | React.Key;
+  value: boolean | React.Key | string | number;
 };
 
 export type TDays = "Sat" | "Sun" | "Mon" | "Tue" | "Wed" | "Thu" | "Fri";

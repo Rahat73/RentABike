@@ -9,7 +9,9 @@ const bikeApi = baseApi.injectEndpoints({
         const params = new URLSearchParams();
 
         args?.forEach((arg: TQueryParams) => {
-          params.append(arg.key, arg.value as string);
+          if (arg.key && arg.value !== null && arg.value !== undefined) {
+            params.append(arg.key, arg.value as string);
+          }
         });
 
         return {

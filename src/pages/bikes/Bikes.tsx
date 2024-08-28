@@ -25,16 +25,71 @@ const Bikes = () => {
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const [searchParams, setSearchParams] = useState<{
+    key: string;
+    value: string | null;
+  }>({ key: "searchParams", value: null });
+
+  const [filterBrand, setFilterBrand] = useState<
+    { key: string; value: string }[]
+  >([]);
+
+  const [filterAvailability, setFilterAvailability] = useState<{
+    key: string;
+    value: boolean | null;
+  }>({ key: "isAvailable", value: null });
+
+  const [sortPrice, setSortPrice] = useState<{
+    key: string;
+    value: string | null;
+  }>({ key: "sort", value: null });
+
+  const [sortYear, setSortYear] = useState<{
+    key: string;
+    value: string | null;
+  }>({ key: "sort", value: null });
+
   const navigate = useNavigate();
 
-  const { data: bikesData, isFetching } = useGetAllbikesQuery(undefined);
+  const { data: bikesData, isFetching } = useGetAllbikesQuery([
+    searchParams,
+    ...filterBrand,
+    filterAvailability,
+    sortPrice,
+    sortYear,
+  ]);
+
+  const { data: bikeBrands, isFetching: isbikeBrandsFetching } =
+    useGetAllbikesQuery([]);
 
   const bikeBrandOptions = [
-    ...new Set(bikesData?.data?.map((bike) => bike.brand)),
+    ...new Set(bikeBrands?.data?.map((bike) => bike.brand)),
   ];
-  console.log(bikeBrandOptions);
 
-  const onSearch = () => {};
+  const onSearch = (value: string) => {
+    setSearchParams({ key: "searchParams", value });
+  };
+
+  const handleBrandFilter = (brands: string[]) => {
+    const brandFilter = brands.map((brand) => ({
+      key: "brand",
+      value: brand,
+    }));
+
+    setFilterBrand(brandFilter);
+  };
+
+  const handleAvailabilityFilter = (availability: boolean | null) => {
+    setFilterAvailability({ key: "isAvailable", value: availability });
+  };
+
+  const handleSortByPrice = (price: string) => {
+    setSortPrice({ key: "sort", value: price });
+  };
+
+  const handleSortByYear = (year: string) => {
+    setSortYear({ key: "sort", value: year });
+  };
 
   return (
     <div className="min-h-[80vh] w-10/12 lg:w-9/12 mx-auto my-10 rounded-lg px-10">
@@ -42,7 +97,7 @@ const Bikes = () => {
       <div className="flex justify-center space-x-5 mb-10">
         <Search
           className="w-72"
-          placeholder="Search bikes"
+          placeholder="name, model, brand..."
           allowClear
           enterButton="Search"
           size="large"
@@ -92,7 +147,17 @@ const Bikes = () => {
                   </div>
                 }
               >
-                <Meta title={bike.name} description={bike.description} />
+                <Meta
+                  title={
+                    <div className="flex justify-between">
+                      <p>{bike.name}</p>
+                      <span className="text-sm rounded-full bg-gray-200 px-2 py-1">
+                        {bike?.pricePerHour} $
+                      </span>
+                    </div>
+                  }
+                  description={bike.description}
+                />
                 <Button
                   className="mt-5"
                   onClick={() => {
@@ -117,11 +182,22 @@ const Bikes = () => {
         <Space direction="vertical" size={[0, 30]} className="w-10/12">
           <div>
             <p className="font-semibold">Availability</p>
-            <Segmented<string>
-              options={["All", "Available", "Not Available"]}
-              onChange={(value) => {
-                console.log(value);
-              }}
+            <Segmented<boolean | null>
+              options={[
+                {
+                  label: "All",
+                  value: null,
+                },
+                {
+                  label: "Available",
+                  value: true,
+                },
+                {
+                  label: "Not Available",
+                  value: false,
+                },
+              ]}
+              onChange={handleAvailabilityFilter}
               className="w-full"
             />
           </div>
@@ -132,10 +208,12 @@ const Bikes = () => {
               allowClear
               className="w-full"
               placeholder="Select Brands"
+              loading={isbikeBrandsFetching}
               options={bikeBrandOptions.map((brand) => ({
                 value: brand,
                 label: brand,
               }))}
+              onChange={handleBrandFilter}
             />
           </div>
           <div>
@@ -154,6 +232,7 @@ const Bikes = () => {
                   label: "Price: High to Low",
                 },
               ]}
+              onChange={handleSortByPrice}
             />
           </div>
           <div>
@@ -172,6 +251,7 @@ const Bikes = () => {
                   label: "Price: Descending",
                 },
               ]}
+              onChange={handleSortByYear}
             />
           </div>
         </Space>
