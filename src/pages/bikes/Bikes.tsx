@@ -12,6 +12,7 @@ import {
   Space,
 } from "antd";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useGetAllbikesQuery } from "../../redux/features/bike/bikeApi";
 
 const { Meta } = Card;
@@ -23,6 +24,8 @@ const Bikes = () => {
   }, []);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const { data: bikesData, isFetching } = useGetAllbikesQuery(undefined);
 
@@ -90,7 +93,14 @@ const Bikes = () => {
                 }
               >
                 <Meta title={bike.name} description={bike.description} />
-                <Button className="mt-5">View Details</Button>
+                <Button
+                  className="mt-5"
+                  onClick={() => {
+                    navigate(`${bike._id}`);
+                  }}
+                >
+                  View Details
+                </Button>
               </Card>
             </Col>
           ))

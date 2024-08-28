@@ -33,7 +33,7 @@ const Login = () => {
         toast.success(`Welcome back ${res.data?.data?.name} !`, {
           id: toastId,
         });
-        navigate(`/${user.role}`);
+        navigate(`/${user.role}`, { replace: true });
       }
     } catch (error: any) {
       toast.error("Something went wrong !", { id: toastId });

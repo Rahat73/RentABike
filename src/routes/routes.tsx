@@ -10,6 +10,7 @@ import TermsOfService from "../pages/ppts/TermsOfService";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
 import UserProfile from "../pages/userProfile/UserProfile";
 import Bikes from "../pages/bikes/Bikes";
+import BikeDetails from "../pages/bikes/BikeDetails";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "bikes",
         element: <Bikes />,
+      },
+      {
+        path: "bikes/:bikeId",
+        element: <BikeDetails />,
       },
     ],
   },

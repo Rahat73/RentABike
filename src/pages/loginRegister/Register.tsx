@@ -26,7 +26,7 @@ const Register = () => {
         toast.error(res.error?.data.message, { id: toastId });
       } else {
         toast.success("Registered successfully!", { id: toastId });
-        navigate(`/login`);
+        navigate(`/login`, { replace: true });
       }
     } catch (error) {
       toast.error("Something went wrong !", { id: toastId });

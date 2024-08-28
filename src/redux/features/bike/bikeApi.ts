@@ -27,6 +27,22 @@ const bikeApi = baseApi.injectEndpoints({
       providesTags: ["bikes"],
     }),
 
+    getBikeById: builder.query({
+      query: (bikeId) => {
+        return {
+          url: `/bikes/${bikeId}`,
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponseRedux<TBike>) => {
+        return {
+          data: response.data,
+          //   meta: response.meta,
+        };
+      },
+      providesTags: ["bikes"],
+    }),
+
     updateUserInfo: builder.mutation({
       query: (userInfo) => ({
         url: "/users/me",
@@ -38,4 +54,8 @@ const bikeApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllbikesQuery, useUpdateUserInfoMutation } = bikeApi;
+export const {
+  useGetAllbikesQuery,
+  useGetBikeByIdQuery,
+  useUpdateUserInfoMutation,
+} = bikeApi;
