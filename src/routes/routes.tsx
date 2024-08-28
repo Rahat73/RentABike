@@ -14,6 +14,11 @@ import BikeDetails from "../pages/bikes/BikeDetails";
 import Booking from "../pages/bookings/Booking";
 import MyRentals from "../pages/bookings/MyRentals";
 import Payment from "../pages/payment/Payment";
+import AdminDashboard from "../components/layout/AdminDashboard";
+import BikeManagement from "../pages/adminDashboard/bikeManagement/BikeManagement";
+import UserManagement from "../pages/adminDashboard/userManagement/UserManagement";
+import ReturnBike from "../pages/adminDashboard/returnBike/ReturnBike";
+import CouponManagement from "../pages/adminDashboard/couponManagement/CouponManagement";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +83,28 @@ const router = createBrowserRouter([
       {
         path: "payment/:bookingId",
         element: <Payment />,
+      },
+      {
+        path: "dashboard",
+        element: <AdminDashboard />,
+        children: [
+          {
+            path: "bike-management",
+            element: <BikeManagement />,
+          },
+          {
+            path: "user-management",
+            element: <UserManagement />,
+          },
+          {
+            path: "return-bike",
+            element: <ReturnBike />,
+          },
+          {
+            path: "coupon-management",
+            element: <CouponManagement />,
+          },
+        ],
       },
     ],
   },

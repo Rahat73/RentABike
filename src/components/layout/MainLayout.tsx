@@ -32,7 +32,11 @@ const MainLayout = () => {
   const dispatch = useAppDispatch();
   const token = useAppSelector(selectCurrentToken);
 
-  const user = token && (verifyToken(token) as TUser);
+  let user;
+
+  if (token) {
+    user = verifyToken(token) as TUser;
+  }
 
   const { data: userInfo, isFetching } = useGetUserInfoQuery(undefined);
 
@@ -63,6 +67,18 @@ const MainLayout = () => {
             key: "my-rentals",
             label: (
               <NavLink to={`/${user?.role}/my-rentals`}>My Rentals</NavLink>
+            ),
+          },
+        ]
+      : []),
+    ...(user?.role === "admin"
+      ? [
+          {
+            key: "dashboard",
+            label: (
+              <NavLink to={`/${user?.role}/dashboard/bike-management`}>
+                Dashboard
+              </NavLink>
             ),
           },
         ]
