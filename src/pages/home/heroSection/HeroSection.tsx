@@ -1,9 +1,35 @@
-import { Button, Input } from "antd";
+import { AutoComplete, Button, Input } from "antd";
 import heroImage from "../../../assets/images/hero-banner.jpeg";
 import heroImageHalf from "../../../assets/images/hero-banner-half.jpeg";
+import { useState } from "react";
+import { useGetAllbikesQuery } from "../../../redux/features/bike/bikeApi";
+import { useNavigate } from "react-router-dom";
 const { Search } = Input;
 const HeroSection = () => {
-  const onSearch = () => {};
+  const [searchTerm, setSearchTerm] = useState<{
+    key: string;
+    value: string | null;
+  }>({
+    key: "searchParams",
+    value: null,
+  });
+  const { data: suggestions } = useGetAllbikesQuery([
+    searchTerm,
+    { key: "limit", value: 4 },
+  ]);
+
+  const handleSearch = (value: string) => {
+    setSearchTerm({ key: "searchParams", value: value });
+    console.log("test", value);
+  };
+
+  const options = suggestions?.data?.map((bike) => ({
+    value: bike._id,
+    label: `${bike.name} - ${bike.brand} - ${bike.model}`,
+  }));
+
+  const navigate = useNavigate();
+
   return (
     <div className="relative w-full">
       <img
@@ -25,16 +51,25 @@ const HeroSection = () => {
           service offers a wide range of bikes to suit every rider's needs.
           Explore new horizons and create unforgettable memories.
         </p>
-        <Button className="w-40">Buy Now</Button>
+        <Button className="w-40">Book Now</Button>
       </div>
-      <Search
+
+      <AutoComplete
         className="absolute inset-x-0 left-1/2 bottom-2 lg:bottom-20 transform -translate-x-1/2 w-60 md:w-96"
-        placeholder="Search bikes"
-        allowClear
-        enterButton="Search"
-        size="large"
-        onSearch={onSearch}
-      />
+        placeholder="Search bikes (Name, Brand, Model...)"
+        options={options}
+        onSearch={handleSearch}
+        onSelect={(value) => navigate(`bikes/${value}`)}
+      >
+        <Search
+          size="large"
+          enterButton="Search"
+          allowClear
+          onSearch={(value) =>
+            navigate("bikes", { state: { searchValue: value } })
+          }
+        />
+      </AutoComplete>
     </div>
   );
 };

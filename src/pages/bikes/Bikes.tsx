@@ -12,7 +12,7 @@ import {
   Space,
 } from "antd";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useGetAllbikesQuery } from "../../redux/features/bike/bikeApi";
 
 const { Meta } = Card;
@@ -23,12 +23,21 @@ const Bikes = () => {
     scrollTo(0, 0);
   }, []);
 
+  const location = useLocation();
+  const searchValue = location.state?.searchValue;
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const [searchParams, setSearchParams] = useState<{
     key: string;
     value: string | null;
   }>({ key: "searchParams", value: null });
+
+  useEffect(() => {
+    if (searchValue) {
+      setSearchParams({ key: "searchParams", value: searchValue });
+    }
+  }, [searchValue]);
 
   const [filterBrand, setFilterBrand] = useState<
     { key: string; value: string }[]
@@ -39,12 +48,7 @@ const Bikes = () => {
     value: boolean | null;
   }>({ key: "isAvailable", value: null });
 
-  const [sortPrice, setSortPrice] = useState<{
-    key: string;
-    value: string | null;
-  }>({ key: "sort", value: null });
-
-  const [sortYear, setSortYear] = useState<{
+  const [sortData, setSortData] = useState<{
     key: string;
     value: string | null;
   }>({ key: "sort", value: null });
@@ -55,8 +59,7 @@ const Bikes = () => {
     searchParams,
     ...filterBrand,
     filterAvailability,
-    sortPrice,
-    sortYear,
+    sortData,
   ]);
 
   const { data: bikeBrands, isFetching: isbikeBrandsFetching } =
@@ -83,12 +86,14 @@ const Bikes = () => {
     setFilterAvailability({ key: "isAvailable", value: availability });
   };
 
-  const handleSortByPrice = (price: string) => {
-    setSortPrice({ key: "sort", value: price });
+  const handleSortBy = (value: string) => {
+    setSortData({ key: "sort", value: value });
   };
 
-  const handleSortByYear = (year: string) => {
-    setSortYear({ key: "sort", value: year });
+  const handleClearFilters = () => {
+    setFilterBrand([]);
+    setFilterAvailability({ key: "isAvailable", value: null });
+    setSortData({ key: "sort", value: null });
   };
 
   return (
@@ -102,6 +107,7 @@ const Bikes = () => {
           enterButton="Search"
           size="large"
           onSearch={onSearch}
+          defaultValue={searchValue}
         />
         <Button
           size="large"
@@ -183,6 +189,7 @@ const Bikes = () => {
           <div>
             <p className="font-semibold">Availability</p>
             <Segmented<boolean | null>
+              value={filterAvailability?.value}
               options={[
                 {
                   label: "All",
@@ -204,6 +211,7 @@ const Bikes = () => {
           <div>
             <p className="font-semibold">Brands</p>
             <Select
+              value={filterBrand?.map((brand) => brand.value)}
               mode="multiple"
               allowClear
               className="w-full"
@@ -217,8 +225,9 @@ const Bikes = () => {
             />
           </div>
           <div>
-            <p className="font-semibold">Sort By Price</p>
+            <p className="font-semibold">Sort By</p>
             <Select
+              value={sortData?.value}
               allowClear
               className="w-full"
               placeholder="Sort By"
@@ -231,17 +240,6 @@ const Bikes = () => {
                   value: "-pricePerHour",
                   label: "Price: High to Low",
                 },
-              ]}
-              onChange={handleSortByPrice}
-            />
-          </div>
-          <div>
-            <p className="font-semibold">Sort By Year</p>
-            <Select
-              allowClear
-              className="w-full"
-              placeholder="Sort By"
-              options={[
                 {
                   value: "year",
                   label: "Year: Ascending",
@@ -251,10 +249,19 @@ const Bikes = () => {
                   label: "Price: Descending",
                 },
               ]}
-              onChange={handleSortByYear}
+              onChange={handleSortBy}
             />
           </div>
         </Space>
+
+        <Button
+          type="primary"
+          size="large"
+          className="w-full lg:w-auto mt-8"
+          onClick={handleClearFilters}
+        >
+          Clear Filters
+        </Button>
       </Drawer>
     </div>
   );
