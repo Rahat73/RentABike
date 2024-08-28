@@ -45,13 +45,30 @@ const bikeApi = baseApi.injectEndpoints({
       providesTags: ["bikes"],
     }),
 
-    updateUserInfo: builder.mutation({
-      query: (userInfo) => ({
-        url: "/users/me",
-        method: "PUT",
-        body: userInfo,
+    createBike: builder.mutation({
+      query: (bikeInfo) => ({
+        url: `/bikes`,
+        method: "POST",
+        body: bikeInfo,
       }),
-      invalidatesTags: ["userProfile"],
+      invalidatesTags: ["bikes"],
+    }),
+
+    updateBikeInfo: builder.mutation({
+      query: ({ bikeId, bikeInfo }) => ({
+        url: `/bikes/${bikeId}`,
+        method: "PUT",
+        body: bikeInfo,
+      }),
+      invalidatesTags: ["bikes"],
+    }),
+
+    deleteBike: builder.mutation({
+      query: (bikeId) => ({
+        url: `/bikes/${bikeId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["bikes"],
     }),
   }),
 });
@@ -59,5 +76,7 @@ const bikeApi = baseApi.injectEndpoints({
 export const {
   useGetAllbikesQuery,
   useGetBikeByIdQuery,
-  useUpdateUserInfoMutation,
+  useCreateBikeMutation,
+  useUpdateBikeInfoMutation,
+  useDeleteBikeMutation,
 } = bikeApi;

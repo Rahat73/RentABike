@@ -38,7 +38,17 @@ const AdminDashboard = () => {
   return (
     <Layout>
       <Layout>
-        <Sider width={200} style={{ background: "white", height: "80vh" }}>
+        <Sider
+          breakpoint="md"
+          width={200}
+          style={{
+            background: "white",
+            height: "65vh",
+            position: "sticky",
+            top: "56px",
+            left: 0,
+          }}
+        >
           <Menu
             mode="inline"
             defaultSelectedKeys={["bike-management"]}
