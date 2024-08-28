@@ -11,6 +11,9 @@ import ProtectedRoute from "../components/layout/ProtectedRoute";
 import UserProfile from "../pages/userProfile/UserProfile";
 import Bikes from "../pages/bikes/Bikes";
 import BikeDetails from "../pages/bikes/BikeDetails";
+import Booking from "../pages/bookings/Booking";
+import MyRentals from "../pages/bookings/MyRentals";
+import Payment from "../pages/payment/Payment";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +67,18 @@ const router = createBrowserRouter([
         path: "bikes/:bikeId",
         element: <BikeDetails />,
       },
+      {
+        path: "booking",
+        element: <Booking />,
+      },
+      {
+        path: "my-rentals",
+        element: <MyRentals />,
+      },
+      {
+        path: "payment/:bookingId",
+        element: <Payment />,
+      },
     ],
   },
   {
@@ -89,6 +104,18 @@ const router = createBrowserRouter([
       {
         path: "bikes",
         element: <Bikes />,
+      },
+      {
+        path: "bikes/:bikeId",
+        element: <BikeDetails />,
+      },
+      {
+        path: "my-rentals",
+        element: <MyRentals />,
+      },
+      {
+        path: "payment/:bookingId",
+        element: <Payment />,
       },
     ],
   },

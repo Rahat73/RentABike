@@ -59,6 +59,12 @@ const MainLayout = () => {
             key: "bikes",
             label: <NavLink to={`/${user?.role}/bikes`}>Bikes</NavLink>,
           },
+          {
+            key: "my-rentals",
+            label: (
+              <NavLink to={`/${user?.role}/my-rentals`}>My Rentals</NavLink>
+            ),
+          },
         ]
       : []),
   ];

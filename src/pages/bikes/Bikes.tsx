@@ -23,6 +23,7 @@ const Bikes = () => {
     scrollTo(0, 0);
   }, []);
 
+  const navigate = useNavigate();
   const location = useLocation();
   const searchValue = location.state?.searchValue;
 
@@ -52,8 +53,6 @@ const Bikes = () => {
     key: string;
     value: string | null;
   }>({ key: "sort", value: null });
-
-  const navigate = useNavigate();
 
   const { data: bikesData, isFetching } = useGetAllbikesQuery([
     searchParams,

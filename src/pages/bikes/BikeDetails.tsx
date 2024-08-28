@@ -1,21 +1,56 @@
-import { Card, Col, Row, Button } from "antd";
+import {
+  Card,
+  Col,
+  Row,
+  Button,
+  Modal,
+  TimePicker,
+  Flex,
+  TimePickerProps,
+  message,
+} from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetBikeByIdQuery } from "../../redux/features/bike/bikeApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 
 const BikeDetails = () => {
   useEffect(() => {
     scrollTo(0, 0);
   }, []);
 
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [startTime, setStartTime] = useState<string | null>(null);
+
+  const user = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   const { bikeId } = useParams();
 
   const { data: bike, isFetching } = useGetBikeByIdQuery(bikeId);
 
   const handleBookNow = () => {
-    navigate("/booking");
+    setIsBookingModalOpen(true);
   };
+
+  const handleTimeSelect: TimePickerProps["onOk"] = (value) => {
+    const formattedStartTime = dayjs(value).format("YYYY-MM-DDTHH:mm:ss[Z]");
+    setStartTime(formattedStartTime);
+  };
+
+  const handleconfirmBooking = () => {
+    if (startTime) {
+      const bookingData = {
+        bikeId: bike?.data?._id,
+        startTime: startTime,
+      };
+      navigate(`/${user?.role}/booking`, { state: { bookingData } });
+    } else {
+      message.error("Please select start time");
+    }
+  };
+
   return (
     <div className="w-10/12 mx-auto mt-8">
       <Card
@@ -64,6 +99,7 @@ const BikeDetails = () => {
               </li>
             </ul>
             <Button
+              disabled={!bike?.data?.isAvailable}
               type="primary"
               size="large"
               className="w-full lg:w-auto"
@@ -74,6 +110,28 @@ const BikeDetails = () => {
           </Col>
         </Row>
       </Card>
+      <Modal
+        title="Book Now"
+        open={isBookingModalOpen}
+        onCancel={() => setIsBookingModalOpen(false)}
+        onOk={handleconfirmBooking}
+        okText="Confirm"
+      >
+        <Flex align="center" justify="center" className="my-10">
+          <span className="mr-2">Start Time : </span>
+          <TimePicker
+            format={"HH:mm"}
+            className="w-72"
+            required
+            onChange={(time) => {
+              if (!time) {
+                setStartTime(null);
+              }
+            }}
+            onOk={handleTimeSelect}
+          />
+        </Flex>
+      </Modal>
     </div>
   );
 };
