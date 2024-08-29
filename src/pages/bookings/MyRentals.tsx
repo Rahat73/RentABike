@@ -83,7 +83,11 @@ const BookingItems = ({
   };
 
   return (
-    <Card title={booking.bikeId} bordered={false} className="mb-4 shadow-lg">
+    <Card
+      title={booking.bikeId.name}
+      bordered={false}
+      className="mb-4 shadow-lg"
+    >
       <Row gutter={[16, 16]}>
         <Col xs={24} md={12}>
           <p>

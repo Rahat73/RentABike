@@ -12,7 +12,42 @@ const bookingApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["bookings"],
     }),
+
+    returnBike: builder.mutation({
+      query: ({ bookingId, returnTime }) => ({
+        url: `/rentals/${bookingId}/return`,
+        method: "PUT",
+        body: { returnTime },
+      }),
+      invalidatesTags: ["bookings", "bikes"],
+    }),
+
     getMyBookings: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        args?.forEach((arg: TQueryParams) => {
+          if (arg.key && arg.value !== null && arg.value !== undefined) {
+            params.append(arg.key, arg.value as string);
+          }
+        });
+
+        return {
+          url: "/rentals/me",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (response: TResponseRedux<TBooking[]>) => {
+        return {
+          data: response.data,
+          //   meta: response.meta,
+        };
+      },
+      providesTags: ["bookings"],
+    }),
+
+    getAllBookings: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
 
@@ -55,4 +90,9 @@ const bookingApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useCreateBookingMutation, useGetMyBookingsQuery } = bookingApi;
+export const {
+  useCreateBookingMutation,
+  useReturnBikeMutation,
+  useGetMyBookingsQuery,
+  useGetAllBookingsQuery,
+} = bookingApi;
