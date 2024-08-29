@@ -22,6 +22,14 @@ const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: ["bookings", "bikes"],
     }),
 
+    makePayment: builder.mutation({
+      query: (bookingId) => ({
+        url: `/rentals/${bookingId}/payment`,
+        method: "PUT",
+      }),
+      invalidatesTags: ["bookings"],
+    }),
+
     getMyBookings: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -93,6 +101,7 @@ const bookingApi = baseApi.injectEndpoints({
 export const {
   useCreateBookingMutation,
   useReturnBikeMutation,
+  useMakePaymentMutation,
   useGetMyBookingsQuery,
   useGetAllBookingsQuery,
 } = bookingApi;

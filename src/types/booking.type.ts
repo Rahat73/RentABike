@@ -10,4 +10,5 @@ export type TBooking = {
   totalCost: number;
   isReturned?: boolean;
   isPaid?: boolean;
+  payment_url?: string;
 };

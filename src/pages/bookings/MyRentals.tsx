@@ -11,9 +11,14 @@ import {
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import { TBooking } from "../../types/booking.type";
-import { useGetMyBookingsQuery } from "../../redux/features/booking/bookingApi";
+import {
+  useGetMyBookingsQuery,
+  useMakePaymentMutation,
+} from "../../redux/features/booking/bookingApi";
 import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppSelector } from "../../redux/hooks";
+import { toast } from "sonner";
+import { TPostResponse } from "../../types";
 
 const MyRentals = () => {
   const { data: rentalData, isFetching } = useGetMyBookingsQuery(undefined);
@@ -78,8 +83,20 @@ const BookingItems = ({
 }) => {
   const user = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
-  const handlePayment = (bookingId: string) => {
-    navigate(`/${user?.role}/payment/${bookingId}`);
+  const [makePayment] = useMakePaymentMutation();
+
+  const handlePayment = async (bookingId: string) => {
+    const toastId = toast.loading("Making payment...");
+
+    const res = (await makePayment(bookingId)) as TPostResponse<TBooking>;
+
+    if (res.error) {
+      toast.error(res.error.data.message, { id: toastId });
+    } else {
+      toast.success(res.data?.message, { id: toastId });
+      window.location.href = res.data?.data.payment_url as string;
+      navigate(`/${user?.role}/`);
+    }
   };
 
   return (
@@ -110,9 +127,16 @@ const BookingItems = ({
             Total Cost: ${booking.totalCost.toFixed(2)}
           </p>
           {showPayButton && (
-            <Button type="primary" onClick={() => handlePayment(booking._id)}>
-              Pay Now
-            </Button>
+            <>
+              {!booking.isReturned && <small>Return your bike first</small>}
+              <Button
+                type="primary"
+                disabled={!booking.isReturned}
+                onClick={() => handlePayment(booking._id)}
+              >
+                Pay Now
+              </Button>
+            </>
           )}
         </Col>
       </Row>
