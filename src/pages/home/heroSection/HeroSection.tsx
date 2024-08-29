@@ -4,6 +4,8 @@ import heroImageHalf from "../../../assets/images/hero-banner-half.jpeg";
 import { useState } from "react";
 import { useGetAllbikesQuery } from "../../../redux/features/bike/bikeApi";
 import { useNavigate } from "react-router-dom";
+import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
+import { useAppSelector } from "../../../redux/hooks";
 const { Search } = Input;
 const HeroSection = () => {
   const [searchTerm, setSearchTerm] = useState<{
@@ -29,6 +31,7 @@ const HeroSection = () => {
   }));
 
   const navigate = useNavigate();
+  const user = useAppSelector(selectCurrentUser);
 
   return (
     <div className="relative w-full">
@@ -51,7 +54,12 @@ const HeroSection = () => {
           service offers a wide range of bikes to suit every rider's needs.
           Explore new horizons and create unforgettable memories.
         </p>
-        <Button className="w-40">Book Now</Button>
+        <Button
+          onClick={() => navigate(`/${user?.role}/bikes`)}
+          className="w-40"
+        >
+          Book Now
+        </Button>
       </div>
 
       <AutoComplete
@@ -59,14 +67,14 @@ const HeroSection = () => {
         placeholder="Search bikes (Name, Brand, Model...)"
         options={options}
         onSearch={handleSearch}
-        onSelect={(value) => navigate(`bikes/${value}`)}
+        onSelect={(value) => navigate(`/${user?.role}/bikes/${value}`)}
       >
         <Search
           size="large"
           enterButton="Search"
           allowClear
           onSearch={(value) =>
-            navigate("bikes", { state: { searchValue: value } })
+            navigate(`/${user?.role}/bikes`, { state: { searchValue: value } })
           }
         />
       </AutoComplete>

@@ -1,11 +1,11 @@
-import { Button, Col, Divider, message, Row, Space, Spin } from "antd";
+import { Button, message, Row, Space, Spin } from "antd";
 import dayjs from "dayjs";
 import { useLocation } from "react-router-dom";
-import { useGetBikeByIdQuery } from "../../redux/features/bike/bikeApi";
 import { toast } from "sonner";
+import { useGetBikeByIdQuery } from "../../redux/features/bike/bikeApi";
+import { useCreateBookingMutation } from "../../redux/features/booking/bookingApi";
 import { TPostResponse } from "../../types";
 import { TBooking } from "../../types/booking.type";
-import { useCreateBookingMutation } from "../../redux/features/booking/bookingApi";
 
 const Booking = () => {
   const location = useLocation();
@@ -19,7 +19,7 @@ const Booking = () => {
     bookingData?.bikeId
   );
 
-  const [createBooking] = useCreateBookingMutation();
+  const [createBooking, { isLoading }] = useCreateBookingMutation();
 
   const handleconfirmBooking = async () => {
     const toastId = toast.loading("Booking in progress...");
@@ -38,35 +38,30 @@ const Booking = () => {
   };
 
   return (
-    <div className="bg-white w-10/12 mx-auto rounded-lg p-10 my-10">
-      <p className="text-3xl font-bold text-center">Payment</p>
-      <Row gutter={20} className="my-5 space-y-5">
-        <Col xs={24} md={11}>
+    <div className="bg-white w-10/12 md:w-6/12 mx-auto rounded-lg p-10 my-10">
+      <p className="text-3xl font-bold text-center">Booking</p>
+      <Row justify={"center"} gutter={20} className="my-5 space-y-5">
+        <Space direction="vertical" className="text-lg">
           <Spin size="large" spinning={isFetching}>
-            <Space direction="vertical" className="text-lg">
-              <p>
-                <strong>Bike Name :</strong> {bikeData?.data?.name}
-              </p>
-              <p>
-                <strong>Start time :</strong> {startTimeFormatted}
-              </p>
-            </Space>
+            <p>
+              <strong>Bike Name :</strong> {bikeData?.data?.name}
+            </p>
+            <p>
+              <strong>Start time :</strong> {startTimeFormatted}
+            </p>
+
+            <p className="text-lg font-semibold">Advance payment: 100$</p>
+            <Row justify={"center"} className="text-lg my-10">
+              <Button
+                type="primary"
+                onClick={handleconfirmBooking}
+                loading={isLoading}
+              >
+                Confirm booking
+              </Button>
+            </Row>
           </Spin>
-        </Col>
-
-        <Col xs={24} md={2} className="flex justify-center items-center">
-          <Divider
-            type="vertical"
-            className="h-full md:h-full bg-gray-300 w-full md:w-1"
-          />
-        </Col>
-
-        <Col xs={24} md={11}>
-          <p>Payment method</p>
-          <Button type="primary" onClick={handleconfirmBooking}>
-            Confirm booking
-          </Button>
-        </Col>
+        </Space>
       </Row>
     </div>
   );

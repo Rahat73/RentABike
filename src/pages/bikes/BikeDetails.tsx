@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import noImage from "../../assets/images/No_Image_Available.jpg";
 
 const BikeDetails = () => {
   useEffect(() => {
@@ -69,7 +70,7 @@ const BikeDetails = () => {
         <Row gutter={[16, 16]}>
           <Col xs={24} lg={12}>
             <img
-              src="https://example.com/bike-image.jpg"
+              src={bike?.data?.img_url ?? noImage}
               alt={bike?.data?.name}
               className="w-full h-auto object-cover rounded-md"
             />

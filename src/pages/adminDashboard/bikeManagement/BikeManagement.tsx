@@ -1,3 +1,4 @@
+import { UploadOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -6,6 +7,7 @@ import {
   Empty,
   Flex,
   Input,
+  message,
   Modal,
   Popconfirm,
   Row,
@@ -14,8 +16,11 @@ import {
   Skeleton,
   Space,
   Table,
+  Upload,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { RcFile } from "antd/es/upload";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
@@ -305,14 +310,53 @@ const BikeUpdateModal = ({
   onCancel: () => void;
   bike: TBike;
 }) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [updateBikeInfo] = useUpdateBikeInfoMutation();
+
+  const beforeUpload = (file: RcFile) => {
+    const isImage = file.type.startsWith("image/");
+    if (!isImage) {
+      message.error("You can only upload image files!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 1;
+    if (!isLt2M) {
+      message.error("Image must be smaller than 2MB!");
+    }
+    return isImage && isLt2M;
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleUpload = async (options: any) => {
+    const { file, onSuccess, onError } = options;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "rent_a_bike");
+
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_CLOUD_NAME
+        }/image/upload`,
+        formData
+      );
+
+      const url = response.data.secure_url;
+      setImageUrl(url);
+      message.success("Image uploaded successfully");
+      onSuccess("OK");
+    } catch (error) {
+      message.error("Image upload failed");
+      onError(error);
+    }
+  };
 
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Updating Bike...");
 
     const updateData = {
       bikeId: bike._id,
-      bikeInfo: data,
+      bikeInfo: { ...data, ...(imageUrl && { img_url: imageUrl }) },
     };
     console.log(updateData);
     const res = (await updateBikeInfo(updateData)) as TPostResponse<TBike>;
@@ -337,11 +381,28 @@ const BikeUpdateModal = ({
             <AppInput type="text" name="name" label="Bike Name" />
             <AppInput type="text" name="model" label="Model" />
             <AppInput type="text" name="brand" label="Brand" />
+            <AppInputNumber name="pricePerHour" label="Price per Hour" />
           </Col>
           <Col xs={24} md={12}>
             <AppInputNumber name="cc" label="CC" />
             <AppInputNumber name="year" label="Year" />
-            <AppInputNumber name="pricePerHour" label="Price per Hour" />
+            <p className="mb-2">Upload Image</p>
+            <Upload
+              accept="image/*"
+              beforeUpload={beforeUpload}
+              customRequest={handleUpload}
+              showUploadList={true}
+              maxCount={1}
+            >
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="Uploaded"
+                style={{ marginTop: 16, maxWidth: "100%" }}
+              />
+            )}
           </Col>
         </Row>
         <Flex justify="end" gap={10}>
@@ -362,13 +423,57 @@ const BikeCreateModal = ({
   visible: boolean;
   onCancel: () => void;
 }) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
   const [createBike] = useCreateBikeMutation();
 
+  const beforeUpload = (file: RcFile) => {
+    const isImage = file.type.startsWith("image/");
+    if (!isImage) {
+      message.error("You can only upload image files!");
+    }
+    const isLt2M = file.size / 1024 / 1024 < 1;
+    if (!isLt2M) {
+      message.error("Image must be smaller than 2MB!");
+    }
+    return isImage && isLt2M;
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleUpload = async (options: any) => {
+    const { file, onSuccess, onError } = options;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "rent_a_bike");
+
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_CLOUD_NAME
+        }/image/upload`,
+        formData
+      );
+
+      const url = response.data.secure_url;
+      setImageUrl(url);
+      message.success("Image uploaded successfully");
+      onSuccess("OK");
+    } catch (error) {
+      message.error("Image upload failed");
+      onError(error);
+    }
+  };
+
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     const toastId = toast.loading("Creating Bike...");
 
-    const res = (await createBike(data)) as TPostResponse<TBike>;
+    const bikeData = {
+      ...data,
+      img_url: imageUrl,
+    };
+
+    const res = (await createBike(bikeData)) as TPostResponse<TBike>;
     if (res.error) {
       toast.error(res.error.data.message, { id: toastId });
     } else {
@@ -389,11 +494,28 @@ const BikeCreateModal = ({
             <AppInput type="text" name="name" label="Bike Name" />
             <AppInput type="text" name="model" label="Model" />
             <AppInput type="text" name="brand" label="Brand" />
+            <AppInputNumber name="pricePerHour" label="Price per Hour" />
           </Col>
           <Col xs={24} md={12}>
             <AppInputNumber name="cc" label="CC" />
             <AppInputNumber name="year" label="Year" />
-            <AppInputNumber name="pricePerHour" label="Price per Hour" />
+            <p className="mb-2">Upload Image</p>
+            <Upload
+              accept="image/*"
+              beforeUpload={beforeUpload}
+              customRequest={handleUpload}
+              showUploadList={true}
+              maxCount={1}
+            >
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
+            {imageUrl && (
+              <img
+                src={imageUrl}
+                alt="Uploaded"
+                style={{ marginTop: 16, maxWidth: "100%" }}
+              />
+            )}
           </Col>
         </Row>
         <AppInput type="text" name="description" label="Description" />

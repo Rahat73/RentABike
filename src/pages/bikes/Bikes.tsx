@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetAllbikesQuery } from "../../redux/features/bike/bikeApi";
+import noImage from "../../assets/images/No_Image_Available.jpg";
 
 const { Meta } = Card;
 const { Search } = Input;
@@ -145,9 +146,9 @@ const Bikes = () => {
                 cover={
                   <div className="overflow-hidden h-[260px]">
                     <img
-                      className="object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
                       alt={bike.name}
-                      src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+                      src={bike?.img_url ?? noImage}
                     />
                   </div>
                 }
