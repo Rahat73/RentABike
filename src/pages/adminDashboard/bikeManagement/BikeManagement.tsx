@@ -1,25 +1,37 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
+  Col,
   Drawer,
   Empty,
+  Flex,
   Input,
+  Modal,
   Popconfirm,
+  Row,
   Segmented,
   Select,
   Skeleton,
   Space,
   Table,
 } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import { BiEdit, BiPlus, BiTrash } from "react-icons/bi";
+import { toast } from "sonner";
+import AppForm from "../../../components/form/AppForm";
+import AppInputNumber from "../../../components/form/AppInpuNumber";
+import AppInput from "../../../components/form/AppInput";
 import {
+  useCreateBikeMutation,
   useDeleteBikeMutation,
   useGetAllbikesQuery,
+  useUpdateBikeInfoMutation,
 } from "../../../redux/features/bike/bikeApi";
-import type { ColumnsType } from "antd/es/table";
-import { TBike } from "../../../types/bike.type";
-import { BiEdit, BiTrash } from "react-icons/bi";
-import { toast } from "sonner";
+import { bikeValidationSchema } from "../../../schemas/bike.schema";
 import { TPostResponse } from "../../../types";
+import { TBike } from "../../../types/bike.type";
 
 const { Search } = Input;
 
@@ -82,6 +94,19 @@ const BikeManagement = () => {
   const [deleteBike] = useDeleteBikeMutation();
 
   /////Create Delete Update/////
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedBike, setSelectedBike] = useState<TBike>({} as TBike);
+
+  const handleUpdateBike = (bike: TBike) => {
+    setSelectedBike(bike);
+    setIsUpdateModalOpen(true);
+  };
+
+  const handleCreateBike = () => {
+    setIsCreateModalOpen(true);
+  };
+
   const handleDeleteBike = async (bikeId: string) => {
     const toastId = toast.loading("Deleting Bike...");
     const res = (await deleteBike(bikeId)) as TPostResponse<TBike>;
@@ -137,7 +162,7 @@ const BikeManagement = () => {
       key: "actions",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="text" onClick={() => {}}>
+          <Button type="text" onClick={() => handleUpdateBike(record)}>
             <BiEdit className="text-2xl" />
           </Button>
           <Popconfirm
@@ -157,6 +182,13 @@ const BikeManagement = () => {
 
   return (
     <div className="w-11/12 mx-auto">
+      <Flex justify="end">
+        <Button type="primary" size="large" onClick={handleCreateBike}>
+          <Flex align="center" className="text-lg">
+            <BiPlus /> Add Bike
+          </Flex>
+        </Button>
+      </Flex>
       <div className="flex justify-center space-x-5 mb-10">
         <Search
           className="w-72"
@@ -249,7 +281,130 @@ const BikeManagement = () => {
           Clear Filters
         </Button>
       </Drawer>
+
+      <BikeUpdateModal
+        visible={isUpdateModalOpen}
+        onCancel={() => setIsUpdateModalOpen(false)}
+        bike={selectedBike}
+      />
+
+      <BikeCreateModal
+        visible={isCreateModalOpen}
+        onCancel={() => setIsCreateModalOpen(false)}
+      />
     </div>
+  );
+};
+
+const BikeUpdateModal = ({
+  visible,
+  onCancel,
+  bike,
+}: {
+  visible: boolean;
+  onCancel: () => void;
+  bike: TBike;
+}) => {
+  const [updateBikeInfo] = useUpdateBikeInfoMutation();
+
+  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Updating Bike...");
+
+    const updateData = {
+      bikeId: bike._id,
+      bikeInfo: data,
+    };
+    console.log(updateData);
+    const res = (await updateBikeInfo(updateData)) as TPostResponse<TBike>;
+    if (res.error) {
+      toast.error(res.error.data.message, { id: toastId });
+    } else {
+      toast.success(res.data?.message, { id: toastId });
+      onCancel();
+      return true;
+    }
+  };
+
+  return (
+    <Modal title="Update Bike" open={visible} onCancel={onCancel} footer={null}>
+      <AppForm
+        onSubmit={handleSubmit}
+        defaultValues={bike}
+        resolver={zodResolver(bikeValidationSchema)}
+      >
+        <Row gutter={20}>
+          <Col xs={24} md={12}>
+            <AppInput type="text" name="name" label="Bike Name" />
+            <AppInput type="text" name="model" label="Model" />
+            <AppInput type="text" name="brand" label="Brand" />
+          </Col>
+          <Col xs={24} md={12}>
+            <AppInputNumber name="cc" label="CC" />
+            <AppInputNumber name="year" label="Year" />
+            <AppInputNumber name="pricePerHour" label="Price per Hour" />
+          </Col>
+        </Row>
+        <Flex justify="end" gap={10}>
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button type="primary" htmlType="submit" className="">
+            Update
+          </Button>
+        </Flex>
+      </AppForm>
+    </Modal>
+  );
+};
+
+const BikeCreateModal = ({
+  visible,
+  onCancel,
+}: {
+  visible: boolean;
+  onCancel: () => void;
+}) => {
+  const [createBike] = useCreateBikeMutation();
+
+  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data);
+    const toastId = toast.loading("Creating Bike...");
+
+    const res = (await createBike(data)) as TPostResponse<TBike>;
+    if (res.error) {
+      toast.error(res.error.data.message, { id: toastId });
+    } else {
+      toast.success(res.data?.message, { id: toastId });
+      onCancel();
+      return true;
+    }
+  };
+
+  return (
+    <Modal title="Create Bike" open={visible} onCancel={onCancel} footer={null}>
+      <AppForm
+        onSubmit={handleSubmit}
+        resolver={zodResolver(bikeValidationSchema)}
+      >
+        <Row gutter={20}>
+          <Col xs={24} md={12}>
+            <AppInput type="text" name="name" label="Bike Name" />
+            <AppInput type="text" name="model" label="Model" />
+            <AppInput type="text" name="brand" label="Brand" />
+          </Col>
+          <Col xs={24} md={12}>
+            <AppInputNumber name="cc" label="CC" />
+            <AppInputNumber name="year" label="Year" />
+            <AppInputNumber name="pricePerHour" label="Price per Hour" />
+          </Col>
+        </Row>
+        <AppInput type="text" name="description" label="Description" />
+        <Flex justify="end" gap={10}>
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button type="primary" htmlType="submit" className="">
+            Create
+          </Button>
+        </Flex>
+      </AppForm>
+    </Modal>
   );
 };
 

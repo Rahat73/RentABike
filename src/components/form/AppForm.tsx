@@ -1,5 +1,5 @@
 import { Form } from "antd";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import {
   DefaultValues,
   FieldValues,
@@ -35,6 +35,12 @@ const AppForm = ({
   }
 
   const methods = useForm(formConfig);
+
+  useEffect(() => {
+    if (defaultValues) {
+      methods.reset(defaultValues);
+    }
+  }, [defaultValues, methods]);
 
   const submitHandler: SubmitHandler<FieldValues> = async (data) => {
     const isSuccess = await onSubmit(data);
