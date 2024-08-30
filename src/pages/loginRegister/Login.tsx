@@ -33,8 +33,9 @@ const Login = () => {
         toast.success(`Welcome back ${res.data?.data?.name} !`, {
           id: toastId,
         });
-        navigate(`/${user.role}`, { replace: true });
+        navigate(`/`, { replace: true });
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error("Something went wrong !", { id: toastId });
       console.error(error);

@@ -1,24 +1,22 @@
 import {
-  Tabs,
   Button,
-  Skeleton,
+  Card,
+  Col,
+  Empty,
   List,
   Row,
-  Col,
-  Card,
+  Skeleton,
+  Tabs,
   TabsProps,
-  Empty,
 } from "antd";
 import { useNavigate } from "react-router-dom";
-import { TBooking } from "../../types/booking.type";
+import { toast } from "sonner";
 import {
   useGetMyBookingsQuery,
   useMakePaymentMutation,
 } from "../../redux/features/booking/bookingApi";
-import { selectCurrentUser } from "../../redux/features/auth/authSlice";
-import { useAppSelector } from "../../redux/hooks";
-import { toast } from "sonner";
 import { TPostResponse } from "../../types";
+import { TBooking } from "../../types/booking.type";
 
 const MyRentals = () => {
   const { data: rentalData, isFetching } = useGetMyBookingsQuery(undefined);
@@ -81,7 +79,6 @@ const BookingItems = ({
   booking: TBooking;
   showPayButton: boolean;
 }) => {
-  const user = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   const [makePayment] = useMakePaymentMutation();
 
@@ -95,7 +92,7 @@ const BookingItems = ({
     } else {
       toast.success(res.data?.message, { id: toastId });
       window.location.href = res.data?.data.payment_url as string;
-      navigate(`/${user?.role}/`);
+      navigate(`/`);
     }
   };
 

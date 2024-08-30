@@ -11,26 +11,22 @@ const items2: MenuProps["items"] = [
   {
     key: "bike-management",
     icon: <FaMotorcycle />,
-    label: (
-      <NavLink to="/admin/dashboard/bike-management">Bike Management</NavLink>
-    ),
+    label: <NavLink to="/dashboard/bike-management">Bike Management</NavLink>,
   },
   {
     key: "user-management",
     icon: <UserOutlined />,
-    label: (
-      <NavLink to="/admin/dashboard/user-management">User Management</NavLink>
-    ),
+    label: <NavLink to="/dashboard/user-management">User Management</NavLink>,
   },
   {
     key: "return-bike",
     icon: <IoReturnDownForwardOutline />,
-    label: <NavLink to="/admin/dashboard/return-bike">Return Bike</NavLink>,
+    label: <NavLink to="/dashboard/return-bike">Return Bike</NavLink>,
   },
   {
     key: "coupon-management",
     icon: <RiCoupon2Fill />,
-    label: <NavLink to="/admin/dashboard/coupon-management">Coupon</NavLink>,
+    label: <NavLink to="/dashboard/coupon-management">Coupon</NavLink>,
   },
 ];
 

@@ -1,14 +1,11 @@
 import { Button, Card, Col, Empty, Row, Skeleton, Space } from "antd";
-import { useGetAllbikesQuery } from "../../../redux/features/bike/bikeApi";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectCurrentUser } from "../../../redux/features/auth/authSlice";
 import noImage from "../../../assets/images/No_Image_Available.jpg";
+import { useGetAllbikesQuery } from "../../../redux/features/bike/bikeApi";
 
 const { Meta } = Card;
 const FeaturedSection = () => {
   const navigate = useNavigate();
-  const user = useAppSelector(selectCurrentUser);
 
   const { data: bikesData, isFetching } = useGetAllbikesQuery([
     { key: "isAvailable", value: true },
@@ -69,7 +66,7 @@ const FeaturedSection = () => {
                   <Button
                     className="mt-5"
                     onClick={() => {
-                      navigate(`/${user?.role}/bikes/${bike._id}`);
+                      navigate(`/bikes/${bike._id}`);
                     }}
                   >
                     View Details

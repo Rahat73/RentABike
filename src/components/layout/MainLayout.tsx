@@ -47,27 +47,21 @@ const MainLayout = () => {
   const menuItems = [
     {
       key: "home",
-      label: <NavLink to={user ? `/${user?.role}/` : "/"}>Home</NavLink>,
+      label: <NavLink to={"/"}>Home</NavLink>,
     },
     {
       key: "about-us",
-      label: (
-        <NavLink to={user ? `/${user?.role}/about-us` : "/about-us"}>
-          About Us
-        </NavLink>
-      ),
+      label: <NavLink to={"/about-us"}>About Us</NavLink>,
+    },
+    {
+      key: "bikes",
+      label: <NavLink to={`/bikes`}>Bikes</NavLink>,
     },
     ...(user
       ? [
           {
-            key: "bikes",
-            label: <NavLink to={`/${user?.role}/bikes`}>Bikes</NavLink>,
-          },
-          {
             key: "my-rentals",
-            label: (
-              <NavLink to={`/${user?.role}/my-rentals`}>My Rentals</NavLink>
-            ),
+            label: <NavLink to={`/my-rentals`}>My Rentals</NavLink>,
           },
         ]
       : []),
@@ -76,9 +70,7 @@ const MainLayout = () => {
           {
             key: "dashboard",
             label: (
-              <NavLink to={`/${user?.role}/dashboard/bike-management`}>
-                Dashboard
-              </NavLink>
+              <NavLink to={`/dashboard/bike-management`}>Dashboard</NavLink>
             ),
           },
         ]
@@ -118,9 +110,7 @@ const MainLayout = () => {
             dropdownRender={() => (
               <div className="bg-white p-4 rounded-lg w-60">
                 <Menu>
-                  <Menu.Item
-                    onClick={() => navigate(`/${user?.role}/user-profile`)}
-                  >
+                  <Menu.Item onClick={() => navigate(`/user-profile`)}>
                     View Profile
                   </Menu.Item>
                 </Menu>

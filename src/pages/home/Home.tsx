@@ -19,9 +19,9 @@ const Home = () => {
       <FloatButton
         tooltip="Compare Bikes"
         type="primary"
-        icon={<GrCompare />}
+        icon={<GrCompare className="text-3xl" />}
         shape="square"
-        className="w-16 h-16"
+        className="w-16 h-16 flex"
         href="/bike-comparison"
       />
     </div>

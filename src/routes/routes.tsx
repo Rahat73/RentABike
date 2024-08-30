@@ -43,32 +43,6 @@ const router = createBrowserRouter([
         element: <TermsOfService />,
       },
       {
-        path: "bike-comparison",
-        element: <BikeComparison />,
-      },
-    ],
-  },
-  {
-    path: "/admin",
-    element: (
-      <ProtectedRoute role="admin">
-        <App />
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: "",
-        element: <Home />,
-      },
-      {
-        path: "about-us",
-        element: <AboutUs />,
-      },
-      {
-        path: "user-profile",
-        element: <UserProfile />,
-      },
-      {
         path: "bikes",
         element: <Bikes />,
       },
@@ -77,20 +51,40 @@ const router = createBrowserRouter([
         element: <BikeDetails />,
       },
       {
+        path: "bike-comparison",
+        element: <BikeComparison />,
+      },
+      {
+        path: "user-profile",
+        element: (
+          <ProtectedRoute role={["admin", "user"]}>
+            <UserProfile />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "booking",
-        element: <Booking />,
+        element: (
+          <ProtectedRoute role={["admin", "user"]}>
+            <Booking />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "my-rentals",
-        element: <MyRentals />,
+        element: (
+          <ProtectedRoute role={["admin", "user"]}>
+            <MyRentals />
+          </ProtectedRoute>
+        ),
       },
-      // {
-      //   path: "payment/:bookingId",
-      //   element: <Payment />,
-      // },
       {
         path: "dashboard",
-        element: <AdminDashboard />,
+        element: (
+          <ProtectedRoute role={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: "bike-management",
@@ -110,44 +104,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-    ],
-  },
-  {
-    path: "/user",
-    element: (
-      <ProtectedRoute role="user">
-        <App />
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: "",
-        element: <Home />,
-      },
-      {
-        path: "about-us",
-        element: <AboutUs />,
-      },
-      {
-        path: "user-profile",
-        element: <UserProfile />,
-      },
-      {
-        path: "bikes",
-        element: <Bikes />,
-      },
-      {
-        path: "bikes/:bikeId",
-        element: <BikeDetails />,
-      },
-      {
-        path: "my-rentals",
-        element: <MyRentals />,
-      },
-      // {
-      //   path: "payment/:bookingId",
-      //   element: <Payment />,
-      // },
     ],
   },
   {

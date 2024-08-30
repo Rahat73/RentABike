@@ -1,21 +1,19 @@
 import {
+  Button,
   Card,
   Col,
-  Row,
-  Button,
-  Modal,
-  TimePicker,
   Flex,
+  Modal,
+  Row,
+  TimePicker,
   TimePickerProps,
   message,
 } from "antd";
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetBikeByIdQuery } from "../../redux/features/bike/bikeApi";
-import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { useAppSelector } from "../../redux/hooks";
-import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import noImage from "../../assets/images/No_Image_Available.jpg";
+import { useGetBikeByIdQuery } from "../../redux/features/bike/bikeApi";
 
 const BikeDetails = () => {
   useEffect(() => {
@@ -25,7 +23,6 @@ const BikeDetails = () => {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [startTime, setStartTime] = useState<string | null>(null);
 
-  const user = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   const { bikeId } = useParams();
 
@@ -46,7 +43,7 @@ const BikeDetails = () => {
         bikeId: bike?.data?._id,
         startTime: startTime,
       };
-      navigate(`/${user?.role}/booking`, { state: { bookingData } });
+      navigate(`/booking`, { state: { bookingData } });
     } else {
       message.error("Please select start time");
     }
