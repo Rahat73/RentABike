@@ -18,6 +18,7 @@ import Register from "../pages/loginRegister/Register";
 import PrivacyPolicy from "../pages/ppts/PrivacyPolicy";
 import TermsOfService from "../pages/ppts/TermsOfService";
 import UserProfile from "../pages/userProfile/UserProfile";
+import BikeComparison from "../pages/bikeComparison/BikeComparison";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "terms-of-service",
         element: <TermsOfService />,
+      },
+      {
+        path: "bike-comparison",
+        element: <BikeComparison />,
       },
     ],
   },
