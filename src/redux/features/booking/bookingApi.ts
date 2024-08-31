@@ -22,6 +22,15 @@ const bookingApi = baseApi.injectEndpoints({
       invalidatesTags: ["bookings", "bikes"],
     }),
 
+    applyCoupon: builder.mutation({
+      query: ({ bookingId, couponCode }) => ({
+        url: `/rentals/${bookingId}/coupon`,
+        method: "PUT",
+        body: couponCode,
+      }),
+      invalidatesTags: ["bookings"],
+    }),
+
     makePayment: builder.mutation({
       query: (bookingId) => ({
         url: `/rentals/${bookingId}/payment`,
@@ -79,28 +88,13 @@ const bookingApi = baseApi.injectEndpoints({
       },
       providesTags: ["bookings"],
     }),
-
-    // getBikeById: builder.query({
-    //   query: (bikeId) => {
-    //     return {
-    //       url: `/bikes/${bikeId}`,
-    //       method: "GET",
-    //     };
-    //   },
-    //   transformResponse: (response: TResponseRedux<TBike>) => {
-    //     return {
-    //       data: response.data,
-    //       //   meta: response.meta,
-    //     };
-    //   },
-    //   providesTags: ["bikes"],
-    // }),
   }),
 });
 
 export const {
   useCreateBookingMutation,
   useReturnBikeMutation,
+  useApplyCouponMutation,
   useMakePaymentMutation,
   useGetMyBookingsQuery,
   useGetAllBookingsQuery,

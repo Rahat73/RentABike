@@ -3,10 +3,12 @@ import { RootState } from "../../store";
 
 export type TCoupon = {
   couponCode: string | null;
+  discountPercent: number | null;
 };
 
 const initialState: TCoupon = {
   couponCode: null,
+  discountPercent: null,
 };
 
 const couponSlice = createSlice({
@@ -15,9 +17,11 @@ const couponSlice = createSlice({
   reducers: {
     setCoupon: (state, action) => {
       state.couponCode = action.payload.couponCode;
+      state.discountPercent = action.payload.discountPercent;
     },
     reset: (state) => {
       state.couponCode = null;
+      state.discountPercent = null;
     },
   },
 });

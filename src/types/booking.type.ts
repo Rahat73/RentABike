@@ -11,4 +11,5 @@ export type TBooking = {
   isReturned?: boolean;
   isPaid?: boolean;
   payment_url?: string;
+  isCouponApplied?: boolean;
 };

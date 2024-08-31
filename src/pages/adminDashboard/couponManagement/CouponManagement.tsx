@@ -31,8 +31,8 @@ const CouponManagement = () => {
       toast.error(res.error.data.message, { id: toastId });
     } else {
       toast.success(res.data?.message, { id: toastId });
-      return true;
       setIsModalOpen(false);
+      return true;
     }
   };
 

@@ -1,20 +1,53 @@
-import { Col, Row } from "antd";
+import { Col, Modal, Row, Space, Spin } from "antd";
 import { ISpinWheelProps, SpinWheel } from "spin-wheel-game";
 import { useAppDispatch } from "../../../redux/hooks";
 import { setCoupon } from "../../../redux/features/coupon/couponSlice";
-
-const segments = [
-  { segmentText: "SAVE10", segColor: "red" },
-  { segmentText: "OFFER5", segColor: "blue" },
-  { segmentText: "WIN15", segColor: "green" },
-  // Add more segments as needed
-];
+import { useState } from "react";
+import { useGetAllCouponsQuery } from "../../../redux/features/coupon/couponApi";
+import CopyToClipboardButton from "../../../components/ui/CopyToClipboardButton";
 
 const DiscountSection = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedCoupon, setSelectedCoupon] = useState<{
+    couponCode: string;
+    discountPercent: number;
+  } | null>(null);
+
   const dispatch = useAppDispatch();
 
+  const { data, isFetching } = useGetAllCouponsQuery(undefined);
+
+  const predefinedColors = ["red", "blue", "green", "orange", "purple"];
+
+  const segments =
+    data?.data?.map(
+      (
+        coupon: { couponCode: string; discountPercent: number },
+        index: number
+      ) => ({
+        segmentText: coupon.couponCode,
+        segColor: predefinedColors[index % predefinedColors.length],
+        discountPercent: coupon.discountPercent,
+      })
+    ) || [];
+
   const handleSpinFinish = (result: string) => {
-    dispatch(setCoupon({ couponCode: "SAVE10", discountPercent: 10 }));
+    const selectedSegment = segments.find(
+      (segment) => segment.segmentText === result
+    );
+    if (selectedSegment) {
+      setSelectedCoupon({
+        couponCode: selectedSegment.segmentText,
+        discountPercent: selectedSegment.discountPercent,
+      });
+      dispatch(
+        setCoupon({
+          couponCode: selectedSegment.segmentText,
+          discountPercent: selectedSegment.discountPercent,
+        })
+      );
+    }
+    setIsOpen(true);
   };
 
   const spinWheelProps: ISpinWheelProps = {
@@ -30,7 +63,7 @@ const DiscountSection = () => {
     fontFamily: "Arial",
     arrowLocation: "top",
     showTextOnSpin: true,
-    isSpinSound: false,
+    isSpinSound: true,
   };
 
   return (
@@ -44,7 +77,9 @@ const DiscountSection = () => {
           lg={16}
           className="bg-white p-5 rounded-lg flex justify-center"
         >
-          <SpinWheel {...spinWheelProps} />
+          <Spin size="large" spinning={isFetching}>
+            {segments.length > 0 ? <SpinWheel {...spinWheelProps} /> : null}
+          </Spin>
         </Col>
         <Col xs={24} lg={8}>
           <div className="bg-white rounded-lg shadow-md p-5 h-full space-y-3">
@@ -64,6 +99,26 @@ const DiscountSection = () => {
           </div>
         </Col>
       </Row>
+
+      <Modal
+        open={isOpen}
+        onCancel={() => setIsOpen(false)}
+        onOk={() => setIsOpen(false)}
+      >
+        <Space direction="vertical">
+          <p className="text-3xl font-bold">You won !!!</p>
+          <p className="text-2xl font-semibold">
+            Coupon Code: "{selectedCoupon?.couponCode}"{" "}
+            <CopyToClipboardButton
+              content={selectedCoupon?.couponCode as string}
+            />
+          </p>
+          <p className="text-xl">
+            Apply the code and get discount of {selectedCoupon?.discountPercent}
+            % in you next booking
+          </p>
+        </Space>
+      </Modal>
     </div>
   );
 };

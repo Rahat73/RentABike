@@ -18,9 +18,16 @@ const persistConfig = {
   key: "auth",
   storage,
 };
+const persistConfigCoupon = {
+  key: "coupon",
+  storage,
+};
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
-const persistedCouponReducer = persistReducer(persistConfig, couponReducer);
+const persistedCouponReducer = persistReducer(
+  persistConfigCoupon,
+  couponReducer
+);
 
 export const store = configureStore({
   reducer: {
