@@ -157,7 +157,7 @@ const Bikes = () => {
                   title={
                     <div className="flex justify-between">
                       <p>{bike.name}</p>
-                      <span className="text-sm rounded-full bg-gray-200 px-2 py-1">
+                      <span className="text-sm rounded-full bg-gray-400 px-2 py-1">
                         {bike?.pricePerHour} $
                       </span>
                     </div>

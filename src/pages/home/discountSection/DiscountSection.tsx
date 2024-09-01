@@ -1,4 +1,4 @@
-import { Col, Modal, Row, Space, Spin } from "antd";
+import { Col, Modal, Row, Space, Spin, theme } from "antd";
 import { ISpinWheelProps, SpinWheel } from "spin-wheel-game";
 import { useAppDispatch } from "../../../redux/hooks";
 import { setCoupon } from "../../../redux/features/coupon/couponSlice";
@@ -7,6 +7,8 @@ import { useGetAllCouponsQuery } from "../../../redux/features/coupon/couponApi"
 import CopyToClipboardButton from "../../../components/ui/CopyToClipboardButton";
 
 const DiscountSection = () => {
+  const { token } = theme.useToken();
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState<{
     couponCode: string;
@@ -75,14 +77,18 @@ const DiscountSection = () => {
         <Col
           xs={24}
           lg={16}
-          className="bg-white p-5 rounded-lg flex justify-center"
+          className="p-5 rounded-lg flex justify-center"
+          style={{ backgroundColor: token.colorBgContainer }}
         >
           <Spin size="large" spinning={isFetching}>
             {segments.length > 0 ? <SpinWheel {...spinWheelProps} /> : null}
           </Spin>
         </Col>
         <Col xs={24} lg={8}>
-          <div className="bg-white rounded-lg shadow-md p-5 h-full space-y-3">
+          <div
+            style={{ backgroundColor: token?.colorBgContainer }}
+            className=" rounded-lg shadow-md p-5 h-full space-y-3"
+          >
             <h3 className="text-2xl font-bold mb-4">How to Apply Coupons</h3>
             <p>
               Spin the wheel and get amazing discounts on your next purchase.

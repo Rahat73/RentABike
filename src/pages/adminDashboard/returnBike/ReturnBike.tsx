@@ -11,7 +11,7 @@ import {
   useGetAllBookingsQuery,
   useReturnBikeMutation,
 } from "../../../redux/features/booking/bookingApi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { TPostResponse } from "../../../types";
 import { TBooking } from "../../../types/booking.type";
@@ -19,6 +19,10 @@ import { toast } from "sonner";
 import { ColumnsType } from "antd/es/table";
 
 const ReturnBike = () => {
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<TBooking | null>(null);
   const [returnTime, setReturnTime] = useState<string | null>(null);

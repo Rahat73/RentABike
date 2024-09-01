@@ -1,5 +1,6 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Layout, Menu, MenuProps } from "antd";
+import { Layout, Menu, MenuProps, theme } from "antd";
+import { useEffect } from "react";
 import { FaMotorcycle } from "react-icons/fa6";
 import { IoReturnDownForwardOutline } from "react-icons/io5";
 import { RiCoupon2Fill } from "react-icons/ri";
@@ -31,6 +32,12 @@ const items2: MenuProps["items"] = [
 ];
 
 const AdminDashboard = () => {
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
+  const { token } = theme.useToken();
+
   return (
     <Layout>
       <Layout>
@@ -38,11 +45,11 @@ const AdminDashboard = () => {
           breakpoint="md"
           width={200}
           style={{
-            background: "white",
             height: "65vh",
             position: "sticky",
             top: "56px",
             left: 0,
+            backgroundColor: token.colorBgContainer,
           }}
         >
           <Menu
@@ -59,8 +66,8 @@ const AdminDashboard = () => {
               padding: 24,
               margin: 20,
               minHeight: 280,
-              background: "white",
               borderRadius: 10,
+              backgroundColor: token.colorBgContainer,
             }}
           >
             <Outlet />

@@ -9,8 +9,13 @@ import {
 import { TUserInfo } from "../../../types/loginRegistration.type";
 import { toast } from "sonner";
 import { TPostResponse } from "../../../types";
+import { useEffect } from "react";
 
 const UserManagement = () => {
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
   const { data: userList, isFetching } = useGetAllUsersQuery(undefined);
   const [deleteUser] = useDeleteUserMutation();
   const [makeAdmin] = useMakeAdminMutation();

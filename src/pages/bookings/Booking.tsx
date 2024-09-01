@@ -1,4 +1,4 @@
-import { Button, message, Row, Space, Spin } from "antd";
+import { Button, message, Row, Space, Spin, theme } from "antd";
 import dayjs from "dayjs";
 import { useLocation } from "react-router-dom";
 import { toast } from "sonner";
@@ -6,8 +6,15 @@ import { useGetBikeByIdQuery } from "../../redux/features/bike/bikeApi";
 import { useCreateBookingMutation } from "../../redux/features/booking/bookingApi";
 import { TPostResponse } from "../../types";
 import { TBooking } from "../../types/booking.type";
+import { useEffect } from "react";
 
 const Booking = () => {
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
+  const { token } = theme.useToken();
+
   const location = useLocation();
   const { bookingData } = location.state || {};
   console.log(bookingData);
@@ -38,7 +45,10 @@ const Booking = () => {
   };
 
   return (
-    <div className="bg-white w-10/12 md:w-6/12 mx-auto rounded-lg p-10 my-10">
+    <div
+      style={{ backgroundColor: token.colorBgContainer }}
+      className="w-10/12 md:w-6/12 mx-auto rounded-lg p-10 my-10"
+    >
       <p className="text-3xl font-bold text-center">Booking</p>
       <Row justify={"center"} gutter={20} className="my-5 space-y-5">
         <Space direction="vertical" className="text-lg">

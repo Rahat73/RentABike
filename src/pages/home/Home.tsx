@@ -12,7 +12,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col space-y-16">
+    <div className="flex flex-col space-y-16 mb-16">
       <HeroSection />
       <FeaturedSection />
       <Testimonials />

@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, theme } from "antd";
 import animationData from "../../../assets/jsons/Animation - 1724706173756.json";
 import Lottie from "lottie-react";
 
@@ -11,8 +11,12 @@ type FieldType = {
 const { TextArea } = Input;
 
 const ContactUs = () => {
+  const { token } = theme.useToken();
   return (
-    <div className="w-10/12 mx-auto p-5 rounded-r-lg bg-white">
+    <div
+      style={{ backgroundColor: token.colorBgContainer }}
+      className="w-10/12 mx-auto p-5 rounded-r-lg"
+    >
       <p className="text-3xl font-bold text-center mb-8">Contact Us</p>
       <div className="grid grid-cols-2 ">
         <div className="col-span-1 flex justify-center items-center pr-10 border-r border-gray-300">

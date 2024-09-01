@@ -1,4 +1,4 @@
-import { Avatar, Carousel, Rate, Space } from "antd";
+import { Avatar, Carousel, Rate, Space, theme } from "antd";
 import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import "./testiminials.css";
 import { UserOutlined } from "@ant-design/icons";
@@ -10,9 +10,16 @@ const contentStyle: React.CSSProperties = {
   borderRadius: "8px",
 };
 
+const { useToken } = theme;
+
 const Testimonials = () => {
+  const { token } = useToken();
+
   return (
-    <div className="w-10/12 mx-auto bg-white p-5 rounded-lg shadow-lg">
+    <div
+      style={{ backgroundColor: token.colorBgContainer }}
+      className="w-10/12 mx-auto  p-5 rounded-lg shadow-lg"
+    >
       <p className="text-3xl font-bold mb-8 text-center">Testimonials</p>
       <Carousel
         autoplay

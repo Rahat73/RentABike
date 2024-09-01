@@ -1,4 +1,4 @@
-import { Timeline } from "antd";
+import { theme, Timeline } from "antd";
 import bikeImage1 from "../../assets/images/bike-1.avif";
 import bikeImage2 from "../../assets/images/bike-2.avif";
 import image_contactus from "../../assets/images/contactus.webp";
@@ -7,18 +7,25 @@ import image_team2 from "../../assets/images/team-2.jpg";
 import image_team3 from "../../assets/images/team-3.jpg";
 import { useEffect } from "react";
 
+const { useToken } = theme;
+
 const AboutUs = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const { token } = useToken();
+
   return (
-    <div className="bg-gray-100 min-h-screen w-10/12 mx-auto">
+    <div className="min-h-screen w-10/12 mx-auto">
       <div className="container mx-auto py-12">
         <h1 className="text-4xl font-bold text-center mb-12">About Us</h1>
 
         {/* Our Company Section */}
-        <section className="bg-white rounded-lg shadow-md p-8 mb-12 grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <section
+          style={{ backgroundColor: token?.colorBgContainer }}
+          className="rounded-lg shadow-md p-8 mb-12 grid grid-cols-1 lg:grid-cols-2 gap-10"
+        >
           <div className="col-span-1">
             <img
               src={bikeImage2}
@@ -68,7 +75,10 @@ const AboutUs = () => {
         </section>
 
         {/* History & Milestones Section */}
-        <section className="text-xl bg-white rounded-lg shadow-md p-8 mb-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <section
+          style={{ backgroundColor: token?.colorBgContainer }}
+          className="text-xl  rounded-lg shadow-md p-8 mb-12 grid grid-cols-1 lg:grid-cols-3 gap-10"
+        >
           <h1 className="text-3xl font-semibold mb-4 flex justify-center items-center col-span-1">
             Our History <br className="hidden lg:block" /> &{" "}
             <br className="hidden lg:block" /> Milestones
@@ -106,7 +116,10 @@ const AboutUs = () => {
         </section>
 
         {/* Contact Information Section */}
-        <section className="bg-white rounded-lg shadow-md p-8 mb-12 grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <section
+          style={{ backgroundColor: token?.colorBgContainer }}
+          className=" rounded-lg shadow-md p-8 mb-12 grid grid-cols-1 lg:grid-cols-2 gap-10"
+        >
           <div className="col-span-1">
             <h2 className="text-3xl font-semibold mb-4">Contact Information</h2>
             <p className="text-lg mb-2">
@@ -129,7 +142,10 @@ const AboutUs = () => {
         </section>
 
         {/* Our Team Section */}
-        <section className="bg-white rounded-lg shadow-md p-8 mb-12">
+        <section
+          style={{ backgroundColor: token?.colorBgContainer }}
+          className=" rounded-lg shadow-md p-8 mb-12"
+        >
           <h2 className="text-3xl font-semibold mb-6">Our Team</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
@@ -163,7 +179,10 @@ const AboutUs = () => {
         </section>
 
         {/* Store Locations Section */}
-        <section className="bg-white rounded-lg shadow-md p-8">
+        <section
+          style={{ backgroundColor: token?.colorBgContainer }}
+          className=" rounded-lg shadow-md p-8"
+        >
           <h2 className="text-3xl font-semibold mb-6">Our Store Locations</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>

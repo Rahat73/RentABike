@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Col, Flex, Modal, Popconfirm, Row, Spin } from "antd";
-import { useState } from "react";
+import { Button, Col, Flex, Modal, Popconfirm, Row, Spin, theme } from "antd";
+import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { BiPlus, BiTrash } from "react-icons/bi";
 import { toast } from "sonner";
@@ -17,6 +17,12 @@ import { TPostResponse } from "../../../types";
 import { TCouponInfo } from "../../../types/coupon.type";
 
 const CouponManagement = () => {
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
+  const { token } = theme.useToken();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: couponData, isFetching } = useGetAllCouponsQuery(undefined);
@@ -62,7 +68,10 @@ const CouponManagement = () => {
           <Row gutter={[24, 24]}>
             {couponData?.data?.map((data) => (
               <Col key={data._id}>
-                <div className="bg-slate-300 border-dashed border-4 p-3 font-semibold">
+                <div
+                  style={{ backgroundColor: token.colorPrimaryBg }}
+                  className=" border-dashed border-4 p-3 font-semibold"
+                >
                   <p>Coupon Code : {data.couponCode}</p>
                   <p>Discount % : {data.discountPercent}</p>
                   <Flex justify="end">

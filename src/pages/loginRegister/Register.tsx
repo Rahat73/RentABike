@@ -2,7 +2,7 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import AppForm from "../../components/form/AppForm";
 import AppInput from "../../components/form/AppInput";
 import AppInputPassword from "../../components/form/AppInputPassword";
-import { Button } from "antd";
+import { Button, theme } from "antd";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registrationSchema } from "../../schemas/loginRegistration.schema";
 import { Link, useNavigate } from "react-router-dom";
@@ -35,7 +35,9 @@ const Register = () => {
   };
 
   return (
-    <section className="bg-white">
+    <section
+      style={{ backgroundColor: theme.useToken().token.colorBgContainer }}
+    >
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
         <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
           <img
@@ -93,7 +95,10 @@ const Register = () => {
                 </svg>
               </a>
 
-              <h1 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
+              <h1
+                style={{ color: theme.useToken().token.colorText }}
+                className="mt-2 text-2xl font-bold  sm:text-3xl md:text-4xl"
+              >
                 Welcome to RentABike 🏍️
               </h1>
 
@@ -106,7 +111,12 @@ const Register = () => {
             </div>
 
             <div className="p-10 border-2 border-dashed">
-              <p className="text-center text-2xl font-bold mb-5">Register</p>
+              <p
+                style={{ color: theme.useToken().token.colorText }}
+                className="text-center text-2xl font-bold mb-5"
+              >
+                Register
+              </p>
               <AppForm
                 onSubmit={handleLogin}
                 resolver={zodResolver(registrationSchema)}

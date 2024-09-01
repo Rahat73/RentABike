@@ -50,13 +50,13 @@ const BikeDetails = () => {
   };
 
   return (
-    <div className="w-10/12 mx-auto mt-8">
+    <div className="w-10/12 mx-auto my-8">
       <Card
         loading={isFetching}
         title={bike?.data?.name}
         extra={
           <div className="flex items-center">
-            <span className="text-xl rounded-full bg-gray-200 px-3 py-1">
+            <span className="text-xl rounded-full bg-gray-400 px-3 py-1">
               {bike?.data?.pricePerHour} $
             </span>
             <span className="text-lg ml-2">/ hour</span>

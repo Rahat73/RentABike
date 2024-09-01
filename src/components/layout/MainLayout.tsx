@@ -10,6 +10,7 @@ import {
   Row,
   Skeleton,
   Space,
+  theme,
 } from "antd";
 import {
   FaSquareFacebook,
@@ -88,12 +89,16 @@ const MainLayout = () => {
           display: "flex",
           alignItems: "center",
           height: "56px",
-          backgroundColor: "white",
+          backgroundColor: theme.useToken().token.colorBgContainer,
         }}
       >
-        <p className="text-3xl font-bold">RentABike</p>
+        <p
+          className="text-3xl font-bold cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          🏍️RentABike
+        </p>
         <Menu
-          // theme="dark"
           mode="horizontal"
           items={menuItems}
           style={{
@@ -105,10 +110,13 @@ const MainLayout = () => {
         />
         {user ? (
           <Dropdown
+            overlayStyle={{
+              backgroundColor: theme.useToken().token.colorBgContainer,
+            }}
             trigger={["click"]}
             arrow
             dropdownRender={() => (
-              <div className="bg-white p-4 rounded-lg w-60">
+              <div className=" p-4 rounded-lg w-60">
                 <Menu>
                   <Menu.Item onClick={() => navigate(`/user-profile`)}>
                     View Profile
@@ -139,10 +147,10 @@ const MainLayout = () => {
             )}
           </Dropdown>
         ) : (
-          <>
+          <Space>
             <Button onClick={() => navigate("/login")}>Login</Button>
             <Button onClick={() => navigate("/register")}>Sign Up</Button>
-          </>
+          </Space>
         )}
       </Header>
       <Content className="min-h-[80vh]">
