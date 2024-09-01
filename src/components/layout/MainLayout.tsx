@@ -26,6 +26,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { verifyToken } from "../../utils/verifyToken";
 import { useGetUserInfoQuery } from "../../redux/features/user/userApi";
+import { reset } from "../../redux/features/coupon/couponSlice";
 const { Header, Content, Footer } = Layout;
 
 const MainLayout = () => {
@@ -44,6 +45,7 @@ const MainLayout = () => {
   const { data: userInfo, isFetching } = useGetUserInfoQuery(undefined);
 
   const handleLogout = () => {
+    dispatch(reset());
     dispatch(logout());
   };
 
@@ -78,6 +80,13 @@ const MainLayout = () => {
           },
         ]
       : []),
+  ];
+
+  const dropDownMenuItems = [
+    {
+      key: "profile",
+      label: <NavLink to={`/user-profile`}>View Profile</NavLink>,
+    },
   ];
 
   return (
@@ -119,11 +128,7 @@ const MainLayout = () => {
             arrow
             dropdownRender={() => (
               <div className=" p-4 rounded-lg w-60">
-                <Menu>
-                  <Menu.Item onClick={() => navigate(`/user-profile`)}>
-                    View Profile
-                  </Menu.Item>
-                </Menu>
+                <Menu items={dropDownMenuItems}></Menu>
                 <Divider style={{ margin: 5 }} />
                 <Space align="end">
                   <Button onClick={handleLogout} danger type="primary">

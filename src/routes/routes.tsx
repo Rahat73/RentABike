@@ -19,6 +19,7 @@ import PrivacyPolicy from "../pages/ppts/PrivacyPolicy";
 import TermsOfService from "../pages/ppts/TermsOfService";
 import UserProfile from "../pages/userProfile/UserProfile";
 import BikeComparison from "../pages/bikeComparison/BikeComparison";
+import NotFound from "../pages/notFound/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 

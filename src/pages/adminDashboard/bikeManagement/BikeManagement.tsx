@@ -358,7 +358,6 @@ const BikeUpdateModal = ({
       bikeId: bike._id,
       bikeInfo: { ...data, ...(imageUrl && { img_url: imageUrl }) },
     };
-    console.log(updateData);
     const res = (await updateBikeInfo(updateData)) as TPostResponse<TBike>;
     if (res.error) {
       toast.error(res.error.data.message, { id: toastId });

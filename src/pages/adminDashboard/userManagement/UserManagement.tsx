@@ -20,8 +20,6 @@ const UserManagement = () => {
   const [deleteUser] = useDeleteUserMutation();
   const [makeAdmin] = useMakeAdminMutation();
 
-  console.log(userList?.data);
-
   const handleDeleteUser = async (userId: string) => {
     const toastId = toast.loading("Deleting user...");
     const res = (await deleteUser(userId)) as TPostResponse<TUserInfo>;

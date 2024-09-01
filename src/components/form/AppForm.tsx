@@ -10,6 +10,7 @@ import {
 
 type TFormConfig = {
   defaultValues?: DefaultValues<FieldValues>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   resolver?: any;
 };
 

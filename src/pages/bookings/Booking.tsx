@@ -1,6 +1,6 @@
 import { Button, message, Row, Space, Spin, theme } from "antd";
 import dayjs from "dayjs";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useGetBikeByIdQuery } from "../../redux/features/bike/bikeApi";
 import { useCreateBookingMutation } from "../../redux/features/booking/bookingApi";
@@ -16,8 +16,9 @@ const Booking = () => {
   const { token } = theme.useToken();
 
   const location = useLocation();
+  const navigate = useNavigate();
+
   const { bookingData } = location.state || {};
-  console.log(bookingData);
   const startTimeFormatted = dayjs(bookingData.startTime).format(
     "DD/MM/YYYY HH:mm a"
   );
@@ -38,6 +39,8 @@ const Booking = () => {
         toast.error(res.error.data.message, { id: toastId });
       } else {
         toast.success(res.data?.message, { id: toastId });
+        window.location.href = res.data?.data.payment_url as string;
+        navigate(`/`);
       }
     } else {
       message.error("Somthing went wrong!");

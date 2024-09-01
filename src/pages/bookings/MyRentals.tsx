@@ -23,9 +23,13 @@ import { TPostResponse } from "../../types";
 import { TBooking } from "../../types/booking.type";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { reset, selectCoupon } from "../../redux/features/coupon/couponSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const MyRentals = () => {
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
   const { couponCode, discountPercent } = useAppSelector(selectCoupon);
 
   const { data: rentalData, isFetching } = useGetMyBookingsQuery(undefined);
@@ -177,7 +181,7 @@ const BookingItems = ({
                 <Space>
                   <Button
                     type="dashed"
-                    hidden={!booking.isReturned || !booking.isCouponApplied}
+                    hidden={!booking.isReturned || booking.isCouponApplied}
                     onClick={() => setIsModalOpen(true)}
                   >
                     Apply coupon

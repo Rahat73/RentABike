@@ -20,7 +20,6 @@ const HeroSection = () => {
 
   const handleSearch = (value: string) => {
     setSearchTerm({ key: "searchParams", value: value });
-    console.log("test", value);
   };
 
   const options = suggestions?.data?.map((bike) => ({

@@ -74,7 +74,7 @@ const BikeComparison = () => {
                   title={
                     <div className="flex justify-between">
                       <p>{term.selectedBike.name}</p>
-                      <span className="text-sm rounded-full bg-gray-200 px-2 py-1">
+                      <span className="text-sm rounded-full bg-gray-400 px-2 py-1">
                         {term.selectedBike.pricePerHour} $
                       </span>
                     </div>
@@ -95,7 +95,7 @@ const BikeComparison = () => {
                 <Button
                   className="mt-5"
                   onClick={() => {
-                    navigate(`${term.selectedBike?._id}`);
+                    navigate(`/bikes/${term.selectedBike?._id}`);
                   }}
                 >
                   View Details

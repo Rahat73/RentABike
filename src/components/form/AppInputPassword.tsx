@@ -14,11 +14,16 @@ const AppInputPassword = ({
   label,
   disabled,
 }: TAppInputPasswordProps) => {
+  const isDarkMode = localStorage.getItem("theme");
   return (
     <Controller
       name={name}
       render={({ field, fieldState: { error } }) => (
-        <Form.Item label={label}>
+        <Form.Item
+          label={
+            <p style={{ color: isDarkMode ? "white" : "black" }}>{label}</p>
+          }
+        >
           <Input.Password
             {...field}
             type={type}

@@ -20,7 +20,6 @@ const ProtectedRoute = ({ children, role }: TProtectedRouteProps) => {
 
   if (token) {
     const { role: userRole } = verifyToken(token) as TUser;
-    console.log(role);
     if (role?.includes(userRole as TRoles)) return children;
     else {
       dispatch(logout());

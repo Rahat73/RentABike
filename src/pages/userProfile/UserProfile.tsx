@@ -1,4 +1,4 @@
-import { Button, Skeleton, Spin, Tag } from "antd";
+import { Button, Skeleton, Spin, Tag, theme } from "antd";
 import AppForm from "../../components/form/AppForm";
 import AppInput from "../../components/form/AppInput";
 import {
@@ -9,8 +9,15 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { TPostResponse } from "../../types";
 import { TUserInfo } from "../../types/loginRegistration.type";
+import { useEffect } from "react";
 
 const UserProfile = () => {
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
+  const { token } = theme.useToken();
+
   const { data: userInfo, isFetching } = useGetUserInfoQuery(undefined);
   const [updateUserInfo] = useUpdateUserInfoMutation();
 
@@ -56,11 +63,14 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="w-10/12 mx-auto md:w-1/2 lg:w-1/2 bg-white my-10">
+    <div
+      style={{ backgroundColor: token.colorBgContainer }}
+      className="w-10/12 mx-auto md:w-1/2 lg:w-1/2 my-10"
+    >
       <div className="p-10 border-2 border-dashed">
         <Spin spinning={isFetching}>
           <p className="text-center text-2xl font-bold mb-5">
-            Welcome Back {userInfo?.data?.name}
+            Welcome Back, {userInfo?.data?.name}
             <Tag className="uppercase ml-3 -translate-y-1" color="blue">
               {userInfo?.data?.role}
             </Tag>

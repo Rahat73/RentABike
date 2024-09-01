@@ -10,7 +10,7 @@ const bookingApi = baseApi.injectEndpoints({
         method: "POST",
         body: bookingInfo,
       }),
-      invalidatesTags: ["bookings"],
+      invalidatesTags: ["bookings", "bikes"],
     }),
 
     returnBike: builder.mutation({
