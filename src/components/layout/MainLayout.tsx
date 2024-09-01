@@ -33,6 +33,8 @@ const MainLayout = () => {
   const dispatch = useAppDispatch();
   const token = useAppSelector(selectCurrentToken);
 
+  const { token: antDToken } = theme.useToken();
+
   let user;
 
   if (token) {
@@ -89,7 +91,7 @@ const MainLayout = () => {
           display: "flex",
           alignItems: "center",
           height: "56px",
-          backgroundColor: theme.useToken().token.colorBgContainer,
+          backgroundColor: antDToken.colorBgContainer,
         }}
       >
         <p
@@ -111,7 +113,7 @@ const MainLayout = () => {
         {user ? (
           <Dropdown
             overlayStyle={{
-              backgroundColor: theme.useToken().token.colorBgContainer,
+              backgroundColor: antDToken.colorBgContainer,
             }}
             trigger={["click"]}
             arrow

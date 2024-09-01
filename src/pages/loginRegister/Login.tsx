@@ -1,18 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, theme } from "antd";
+import { Button } from "antd";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import AppForm from "../../components/form/AppForm";
 import AppInput from "../../components/form/AppInput";
 import AppInputPassword from "../../components/form/AppInputPassword";
-import { loginSchema } from "../../schemas/loginRegistration.schema";
-import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
-import { toast } from "sonner";
 import { setUser, TUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch } from "../../redux/hooks";
-import { verifyToken } from "../../utils/verifyToken";
+import { loginSchema } from "../../schemas/loginRegistration.schema";
 import { TPostResponse } from "../../types";
 import { TUserInfo } from "../../types/loginRegistration.type";
+import { verifyToken } from "../../utils/verifyToken";
 
 const Login = () => {
   const [login] = useLoginMutation();
@@ -42,9 +42,14 @@ const Login = () => {
     }
   };
 
+  const isDarkMode = localStorage.getItem("theme");
+
   return (
     <section
-      style={{ backgroundColor: theme.useToken().token.colorBgContainer }}
+      style={{
+        backgroundColor: isDarkMode === "dark" ? "#1a1a1a" : "#fff",
+        color: isDarkMode === "dark" ? "#fff" : "#000",
+      }}
     >
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
         <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
@@ -104,7 +109,7 @@ const Login = () => {
               </a>
 
               <h1
-                style={{ color: theme.useToken().token.colorText }}
+                // style={{ color: theme.useToken().token.colorText }}
                 className="mt-2 text-2xl font-bold  sm:text-3xl md:text-4xl"
               >
                 Welcome to RentABike 🏍️
@@ -120,7 +125,7 @@ const Login = () => {
 
             <div className="p-10 border-2 border-dashed">
               <p
-                style={{ color: theme.useToken().token.colorText }}
+                // style={{ color: theme.useToken().token.colorText }}
                 className="text-center text-2xl font-bold mb-5"
               >
                 Login
