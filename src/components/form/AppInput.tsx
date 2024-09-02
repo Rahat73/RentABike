@@ -16,7 +16,9 @@ const AppInput = ({ type, name, label, disabled }: TAppInputProps) => {
       render={({ field, fieldState: { error } }) => (
         <Form.Item
           label={
-            <p style={{ color: isDarkMode ? "white" : "black" }}>{label}</p>
+            <p style={{ color: isDarkMode === "dark" ? "white" : "black" }}>
+              {label}
+            </p>
           }
         >
           <Input
