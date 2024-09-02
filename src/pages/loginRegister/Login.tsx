@@ -15,6 +15,11 @@ import { TUserInfo } from "../../types/loginRegistration.type";
 import { verifyToken } from "../../utils/verifyToken";
 
 const Login = () => {
+  const defaultValues = {
+    email: "admin@mail.com",
+    password: "123456",
+  };
+
   const [login] = useLoginMutation();
   const dispatch = useAppDispatch();
 
@@ -133,6 +138,7 @@ const Login = () => {
               <AppForm
                 onSubmit={handleLogin}
                 resolver={zodResolver(loginSchema)}
+                defaultValues={defaultValues}
               >
                 <AppInput type="text" name="email" label="Email" />
                 <AppInputPassword
